@@ -201,7 +201,7 @@ java8中添加了一个包,叫做java.util.function,它包含了很多的类,用
     }
 ```
 ##### 计算集合元素的最大值、最小值、总和以及平均值
-```
+```java
     /*
      * 计算集合元素的最大数值,最小值,总和以及平均值
      * IntStream、LongStream 和 DoubleStream 等流的类中，有个非常有用的方法叫做 summaryStatistics() 。可以返回 IntSummaryStatistics、LongSummaryStatistics 或者 DoubleSummaryStatistics，描述流中元素的各种摘要数据。

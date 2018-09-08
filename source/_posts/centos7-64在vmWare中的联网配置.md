@@ -15,7 +15,7 @@ description: linux在vmWare中的联网配置
     1. 进入网卡文件 `cd /etc/sysconfig/network-scripts/`
     2. 备份原有的网卡,我的是ifcfg-ens33 `cp ifcfg-ens33 ./ifcfg-ens33.bak`
     3. 修改原来的网卡,具体配置如下: `vi ifcfg-ens33`
-```
+```conf
     DEVICE=ens33
     TYPE=Ethernet
     # 静态ip static

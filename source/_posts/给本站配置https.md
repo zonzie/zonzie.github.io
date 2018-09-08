@@ -12,7 +12,7 @@ description: 想给这个站点配置自己的域名,本来是https的,但是配
 配置好了以后,再配置https,这个需要申请一个https的证书,阿里云有免费的证书可以申请,申请好后配置到nginx里面,就可以了.
 
 nginx主要配置内容记录如下:
-```
+```conf
 server {
     listen 443 ssl;
     listen 80;
