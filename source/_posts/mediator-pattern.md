@@ -1,5 +1,5 @@
 ---
-title: mediator_pattern
+title: 中介者模式
 date: 2018-09-11 18:14:01
 tags:
     - design pattern
