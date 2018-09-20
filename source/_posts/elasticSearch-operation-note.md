@@ -131,3 +131,157 @@ curl -H "Content-Type:application/json" -XPOST '192.168.198.88:9200/customer/ext
 ```
 
 #### 数据探索部分
+使用REST reqeust URI发送搜索参数<br/>
+查询index为customer下的所有的文档
+```bash
+curl -XGET 'localhost:9200/customer/_search?pretty'
+```
+
+使用REST request body发送请求, 使用POST或者GET, 一般浏览器会默认抛弃掉GET请求的请求体, 使用POST比较保险
+```bash
+curl -H "Content-Type:application/json" -XPOST 'localhost:9200/customer/_search?pretty' -d '
+{
+    "query": {"match_all": {}}
+}'
+```
+##### 返回的数据主要有以下几部分:
+- took: es执行搜索的耗时(ms)
+- time_out: 搜索是否超时
+- _shards: 告诉我们搜索了多少分片,统计了成功/失败的分片
+- hits: 搜索的结果
+- hits.hits: 实际的搜索结果数组(默认为前10的文档)
+- sort: 结果的排序key(没有则按照score排序)
+- score
+
+##### DSL(Domain-Specific Language, 领域特定语言)
+elasticSearch提供了可执行查询的Json风格的DSL. 这个查询语言非常全面,我们从基础开始<br/>
+查询customer中的一条数据
+```bash
+curl -H "Content-Type:application/json" -XGET '192.168.198.88:9200/customer/_search?pretty' -d '
+{
+    "query": {
+        "match_all": {}
+    }
+}'
+```
+添加查询的分页,from:指定文档开始的编号,size:返回的条数,sort:指定排序的字段和规则
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '
+{
+    "query": {"match_all": {}},
+    "from": 10,
+    "size": 10,
+    "sort": {
+        "age": {
+            "order": "desc"
+        }
+    }
+}'
+```
+
+返回指定字段name和age
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '
+{
+    "query": {
+        "match_all": {}
+    }
+    "_source": ["name", "age"]
+}'
+```
+
+返回年龄为20的customer
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '
+{
+    "query": {
+        "match": {
+            "age": 20
+        }
+    }
+}'
+```
+
+返回所有name中包含john的customer, 不是精确匹配
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '{
+    "query": {
+        "match": {
+            "name": "john"
+        }
+    }
+}'
+```
+
+精确匹配一个单词或者短语
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '{
+    "query": {"match_phrase": {
+        "name": "john"
+    }}
+}'
+```
+
+###### bool查询
+使用boolean逻辑构建较小的查询到更大的查询中去<br/>
+返回name中同时包含john和jane的文档
+```bash
+curl -H "Contetn-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {"name": "john"}},
+                {"match": {"name": "jane"}}
+            ]
+        }
+    }
+}'
+```
+上面的例子中, bool must 语句指定了所有的查询必须为true时匹配到的文档<br/>
+如果两个名字是或的关系,例子如下
+```bash
+curl -H "Contetn-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '{
+    "query": {
+        "bool": {
+            "should": [
+                {"match": {"name": "john"}},
+                {"match": {"name": "jane"}}
+            ]
+        }
+    }
+}'
+```
+bool should中只要有一个为true就会匹配到<br>
+如果两者都不想匹配到
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '{
+    "query": {
+        "bool": {
+            "must_not": [
+                {"match": {"name": "john"}},
+                {"match": {"name": "jane"}}
+            ]
+        }
+    }
+}'
+```
+
+以上如果条件都不为true才会匹配到文档<br/>
+我们可以在bool查询中同时联合使用must, should, must_not
+```bash
+curl -H "Content-Type:application/json" -XGET 'localhost:9200/customer/_search?pretty' -d '{
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {"age": 40}}
+            ],
+            "must_not": [
+                {"match": {"name": "jane"}}
+            ]
+        }
+    }
+}'
+```
+
+###### 过滤查询
+

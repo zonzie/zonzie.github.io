@@ -2,7 +2,7 @@
 title: elasticsearch和ELK的安装使用
 date: 2018-09-01 14:41:38
 tags: 
-	- elasticsearch
+	- elasticSearch
 	- logstash
 	- kibana
 	- ELK
