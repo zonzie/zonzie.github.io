@@ -2,6 +2,11 @@
 type: notes
 date: 2017-12-02 20:18:30
 ---
+### 2018-10
+---
+> 如果你想要说服别人， 要诉诸利益， 而非诉诸理性&nbsp;&nbsp;--富兰克林
+> 个人想要什么， 就会相信什么&nbsp;&nbsp;--德摩斯梯尼
+
 ### 2018-09
 ---
 ![Dunning-Kruger effect](https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180911174656.jpg)
