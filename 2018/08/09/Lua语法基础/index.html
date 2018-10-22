@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis,lua," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="zonzie's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="主要还是为了redis,内容来自:http://www.runoob.com/lua/lua-tutorial.html">
+<meta name="keywords" content="redis,lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua语法基础">
+<meta property="og:url" content="https://zonzie.gitee.io/2018/08/09/Lua语法基础/index.html">
+<meta property="og:site_name" content="zonzie&#39;s notes">
+<meta property="og:description" content="主要还是为了redis,内容来自:http://www.runoob.com/lua/lua-tutorial.html">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-22T10:38:38.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua语法基础">
+<meta name="twitter:description" content="主要还是为了redis,内容来自:http://www.runoob.com/lua/lua-tutorial.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonzie.gitee.io/2018/08/09/Lua语法基础/"/>
+
+
+
+
+
+  <title>Lua语法基础 | zonzie's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zonzie's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-notes">
+          <a href="/notes/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            札记
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zonzie.gitee.io/2018/08/09/Lua语法基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zonzie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zonzie's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Lua语法基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T17:30:30+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/lua/" itemprop="url" rel="index">
+                    <span itemprop="name">lua</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/09/Lua语法基础/" class="leancloud_visitors" data-flag-title="Lua语法基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  主要还是为了redis,内容来自:http://www.runoob.com/lua/lua-tutorial.html
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h4><ul>
+<li>单行注释: 两个减号</li>
+<li><p>多行注释: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--[[</span><br><span class="line"> 多行注释</span><br><span class="line"> 多行注释</span><br><span class="line">]]--</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标示符: 不允许使用@$%等特殊字符,并且区分大小写</p>
+</li>
+<li>关键字: 与一般与语言差别不大,特别的有until,elseif</li>
+<li>全局变量: 默认情况下,变量总是全局变量,变量不需要声明,没有初始化也不会错,只不过得到的结果是nil,删除一个全局变量,只需要给它赋值nil</li>
+<li><p>数据类型:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">nil 表示一个无效值</span><br><span class="line">boolean 布尔类型:true/false</span><br><span class="line">number 表示双精度类型的实浮点数</span><br><span class="line">string 字符串由一对双引号或者单引号来表示</span><br><span class="line">function 由C或者Lua编写的函数</span><br><span class="line">userdata 表示任意存储在变量中的C数据结构</span><br><span class="line">thread 表示执行的独立线路,用于执行协同程序</span><br><span class="line">table Lua中的表其实是一个&quot;关联数组&quot;,表的创建通过&quot;构造表达式&quot;来完成</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>nil 打印一个没有赋值的变量,会输出nil</p>
+<ul>
+<li>对于table和全局变量,nil有删除的作用</li>
+<li>nil比较时应该加上双引号: <code>type(x)==&quot;nil&quot;</code>  输出true</li>
+</ul>
+</li>
+<li><p>boolean 布尔</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> <span class="keyword">or</span> <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"至少一个是true"</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"false和nil都为false"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>string 字符串类型</strong></p>
+<ul>
+<li>可以用一对双引号或者单引号来表示</li>
+<li>也可以用两个方括号来表示”一块”字符串</li>
+<li>在对一个数字字符串进行运算时,lua会尝试将这个数字字符串转为数字<ul>
+<li><code>print(&quot;2&quot; + 6)</code>&rArr;8.0</li>
+</ul>
+</li>
+<li>连接两个字符串使用” .. “:<ul>
+<li><code>print(&quot;a&quot; .. &#39;b&#39;)</code>&rArr;ab</li>
+<li><code>print(123 .. 1243)</code>&rArr;1231243</li>
+</ul>
+</li>
+<li>使用#来计算字符串的长度,放在字符串的前面<ul>
+<li>len = “helloworld”</li>
+<li>print(#len)&rArr;10</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>table 表</strong><ul>
+<li>创建一个空的表: local tbl1 = {}</li>
+<li>直接初始化: local tbl2 = {“apple”, “grape”}</li>
+<li>table不会固定长度大小,有新的数据时table长度会自动增长</li>
+</ul>
+</li>
+<li><p><strong>function 函数</strong></p>
+<ul>
+<li>在Lua中,函数被看作是”第一类值”,可以存在变量里<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial1</span><span class="params">(n)</span></span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> n * factorial1(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(factorial1(<span class="number">5</span>))</span><br><span class="line">factorial2 = factorial1</span><br><span class="line"><span class="built_in">print</span>(factorial2(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ------------------------------</span></span><br><span class="line"><span class="comment">-- 通过匿名函数的方式传参</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFun</span><span class="params">(tab,fun)</span></span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(tab) <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">print</span>(fun(k,v));</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab=&#123;key1=<span class="string">"var1"</span>,key2=<span class="string">"val2"</span>&#125;</span><br><span class="line">testFun(tab,</span><br><span class="line">    <span class="function"><span class="keyword">function</span><span class="params">(key,val)</span></span></span><br><span class="line">        <span class="keyword">return</span> key..<span class="string">"="</span>..val;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>thread 线程</strong></p>
+<ul>
+<li>在 Lua 里，最主要的线程是协同程序（coroutine）。它跟线程（thread）差不多，拥有自己独立的栈、局部变量和指令指针，可以跟其他协同程序共享全局变量和其他大部分东西。</li>
+<li>线程跟协程的区别：线程可以同时多个运行，而协程任意时刻只能运行一个，并且处于运行状态的协程只有被挂起（suspend）时才会暂停。</li>
+</ul>
+</li>
+<li><strong>userdata 自定义类型</strong><ul>
+<li>userdata 是一种用户自定义数据，用于表示一种由应用程序或 C/C++ 语言库所创建的类型，可以将任意 C/C++ 的任意数据类型的数据（通常是 struct 和 指针）存储到 Lua 变量中调用。</li>
+</ul>
+</li>
+<li><strong>lua中的变量</strong><ul>
+<li>共有三种变量: 全局变量,局部变量,表中的域</li>
+<li>lua中所有的变量都是全局变量,哪怕是语句块或者函数里,除非用local显示的声明为局部变量</li>
+<li>局部变量的作用域为从声明位置开始到所在的语句块结束</li>
+<li>变量的默认值均为nil</li>
+</ul>
+</li>
+<li><strong>赋值语句:</strong><ul>
+<li>lua可以对多个变量同时赋值,<code>a = &quot;hello&quot; .. &quot;world&quot;</code>,<code>a,b = 10,2*x</code>, <code>x,y = y,x</code></li>
+<li>当变量的个数和值的个数不一致时, lua会以变量个数为基础采取以下策略<ol>
+<li>变量个数 &gt; 值的个数 –&gt; 按照变量个数补足nil</li>
+<li>变量个数 &lt; 值得个数 –&gt; 多余得值会被忽略</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>索引</strong><ul>
+<li>对table的索引使用[]<ol>
+<li>t[i]</li>
+<li>t.i</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>循环</strong></p>
+<ul>
+<li>几种方式:<ul>
+<li>while 循环</li>
+<li>for循环</li>
+<li>repeat..until</li>
+<li>循环嵌套</li>
+</ul>
+</li>
+<li>循环控制:<ul>
+<li><code>break</code><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"循环将永远执行下去"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>流程控制</strong></p>
+<ul>
+<li><p>控制结构的条件表达式结果可以是任何值, lua认为false和nil为假,true和非nil为真,所以lua中0也是真</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--[ 0 为 true ]</span></span><br><span class="line"><span class="keyword">if</span>(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"0为true"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>lua中的控制结构的语句</p>
+<ul>
+<li>if语句</li>
+<li>if..else 语句</li>
+<li>if嵌套语句</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>函数定义</strong></p>
+  <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">optional_function_scope function_name(argument1, argument2,argument3...,argumentn)</span><br><span class="line">    function_body</span><br><span class="line">    <span class="keyword">return</span> result_params_comma_separated</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>解析<ul>
+<li>optional_function_scope: 该参数是可选的, 制定行函数是全局函数还是局部函数,未设置参数则默认是全局的,局部函数需要使用关键字local</li>
+<li>function_name: 指定函数的名称</li>
+<li>argument1,argument2,argument3…,函数的参数,会以逗号隔开</li>
+<li>function_body: 函数体,函数中需要执行的代码语句块</li>
+<li>result_params_comma_separated: 函数返回值,Lua语言函数可以返回多个值, 以逗号隔开</li>
+</ul>
+</li>
+<li><p>实例</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--[[ 函数返回两个值的最大值 --]]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">max</span><span class="params">(num1, num2)</span></span></span><br><span class="line">    <span class="keyword">if</span>(num1 &gt; num2) <span class="keyword">then</span></span><br><span class="line">        result = num1;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        result = num2;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 调用函数</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"两个值比较最大值为 "</span>, <span class="built_in">max</span>(<span class="number">10</span>,<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"两个值比较最大值为 "</span>, <span class="built_in">max</span>(<span class="number">5</span>,<span class="number">6</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>lua中,将函数作为参数传递给函数</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">myprint = <span class="function"><span class="keyword">function</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"这是打印函数 - ##"</span>, param, <span class="string">"##"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(num1, num2, functionPrint)</span></span></span><br><span class="line">    result = num1 + num2</span><br><span class="line">    <span class="comment">-- 调用传递的函数参数</span></span><br><span class="line">    functionPrint(result)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">myprint(<span class="number">10</span>)</span><br><span class="line"><span class="comment">-- myprint 函数作为参数传递</span></span><br><span class="line">add(<span class="number">2</span>,<span class="number">5</span>,myprint)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多返回值</strong></p>
+<ul>
+<li><p>lua函数可以返回多个结果值,比如string.find,其返回匹配串”开始和结束的下标”(如果不存在匹配串返回nil)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; s,e = string.find(&quot;www.runoob.com&quot;,&quot;runoob&quot;)</span><br><span class="line">&gt; print(s,e)</span><br><span class="line">5, 10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>lua函数中, 在return后列出要返回的值的列表即刻返回多值</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">maximun</span><span class="params">(a)</span></span></span><br><span class="line">    <span class="keyword">local</span> mi = <span class="number">1</span> <span class="comment">-- 最大值索引</span></span><br><span class="line">    <span class="keyword">local</span> m = a[mi] <span class="comment">-- 最大值</span></span><br><span class="line">    <span class="keyword">for</span> i, val <span class="keyword">in</span> <span class="built_in">ipairs</span>(a) <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">if</span> val &gt; m <span class="keyword">then</span></span><br><span class="line">            mi = i</span><br><span class="line">            m = val</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> m, mi</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(maximun(&#123;<span class="number">8</span>,<span class="number">10</span>,<span class="number">23</span>,<span class="number">12</span>,<span class="number">5</span>&#125;))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>可变参数</strong></p>
+<ul>
+<li>lua函数可以接受可变数目的参数,和C类似,在函数参数列表中使用<code>...</code> 表示有可可变的参数<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(...)</span></span></span><br><span class="line"><span class="keyword">local</span> s = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i,v <span class="keyword">in</span> <span class="built_in">ipairs</span>&#123;...&#125; <span class="keyword">do</span> <span class="comment">--&gt; &#123;...&#125;表示一个由所有的变长的参数构成的数组</span></span><br><span class="line">        s = s + v</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(add(<span class="number">33</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>)) <span class="comment">---&gt; 25</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>我们可以将可变参数赋值给一个变量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">average</span><span class="params">(...)</span></span></span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">local</span> <span class="built_in">arg</span>=&#123;...&#125; <span class="comment">---&gt; arg为一个局部表,局部变量</span></span><br><span class="line">    <span class="keyword">for</span> i,v <span class="keyword">in</span> <span class="built_in">ipairs</span>(<span class="built_in">arg</span>) <span class="keyword">do</span></span><br><span class="line">        result = result + v</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"总共传入 "</span>.. #<span class="built_in">arg</span> .. <span class="string">"个数"</span>)</span><br><span class="line">    <span class="keyword">return</span> result/#<span class="built_in">arg</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"平均值为"</span>,average(<span class="number">10</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">// <span class="comment">-------------</span></span><br><span class="line">执行结果为:</span><br><span class="line">总共传入 <span class="number">6</span> 个数</span><br><span class="line">平均值为 <span class="number">5.5</span></span><br><span class="line"></span><br><span class="line">// <span class="comment">------------------------</span></span><br><span class="line"><span class="comment">-- 有时候我们可能需要几个固定参数加上可变参数,固定参数必须放在变长参数之前:</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fwrite</span><span class="params">(fmt, ...)</span></span> <span class="comment">-- -&gt; 固定参数fmt</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="built_in">string</span>.<span class="built_in">format</span>(fmt, ...))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">fwrite(<span class="string">"runoob\n"</span>) <span class="comment">-- -&gt; fmt = "runoob", 没有变长参数</span></span><br><span class="line">fwrite(<span class="string">"%d%d\n"</span>,<span class="number">1</span>,<span class="number">2</span>) <span class="comment">-- &gt; fmt = "%d%d", 变长参数为1和2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通常在遍历变长参数的时候只需要使用{…}, 然而变长参数可能会包含一些nil, 那么就可以用select函数来访问变长参数了: select(‘#’, …) 或者 select(n, …)</p>
+<ul>
+<li>select(‘#’, …) 返回可变参数的长度</li>
+<li>select(n, …) 用于访问n到select(‘#’, …)的参数</li>
+</ul>
+</li>
+<li>调用select时, 必须传入一个固定实参selector(选择开关)和一系列变长参数,如果selector为数字n,那么select返回它的第n个可变实参,否则只能为字符串”#”,这样select会返回变长参数的总数<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(...)</span></span></span><br><span class="line">        <span class="keyword">for</span> i = <span class="number">1</span>, <span class="built_in">select</span>(<span class="string">'#'</span>, ...) <span class="keyword">do</span> <span class="comment">-- -&gt; 获取参数总数</span></span><br><span class="line">            <span class="keyword">local</span> <span class="built_in">arg</span> = <span class="built_in">select</span>(i, ...); <span class="comment">-- -&gt; 读取参数</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"arg"</span>, <span class="built_in">arg</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    foo(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>常用的字符串的操作</strong></p>
+<ul>
+<li><code>string.upper(argument)</code>: 字符串全部转为大写字母</li>
+<li><code>string.lower(argument)</code>: 字符串转换为小写字母</li>
+<li><code>string.gsub(mainString,findString,num)</code>: 在字符串中替换, mainString为要替换的字符串,findString为被替换的字符,replaceString要替换的字符, num替换次数(可以忽略,则全部忽略)<br><code>string.gsub(&quot;aaaa&quot;,&quot;a&quot;,&quot;z&quot;,3)</code></li>
+<li><code>string.find(str,substr,[init,[end]])</code>: 在一个指定的目标字符串中搜索指定的内容(第三个参数为索引),返回其具体位置,不存在就返回nil</li>
+<li><code>string.reverse(&quot;Lua&quot;)</code>: 字符串的反转</li>
+<li><code>string.format(..)</code>: 返回一个类似printf的格式化字符串</li>
+<li><code>string.char(arg)</code>和<code>string.byte(arg[,int])</code>: char将整型数字转成支付并连接,byte转换字符为整数值(可以指定某个字符,默认第一个字符)</li>
+<li><code>string.len(arg)</code>: 计算字符串长度</li>
+<li><code>string.rep(string,n)</code>: 返回字符串string的n个拷贝</li>
+<li><p><code>string.gmatch(str,pattern)</code>: 回一个迭代器函数，每一次调用这个函数，返回一个在字符串 str 找到的下一个符合 pattern 描述的子串。如果参数 pattern 描述的字符串没有找到，迭代函数返回nil</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> <span class="built_in">string</span>.<span class="built_in">gmatch</span>(<span class="string">"Hello Lua user"</span>,<span class="string">"%a+"</span>) <span class="keyword">do</span> <span class="built_in">print</span>(word) <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>string.match(str, pattern, init)</code>: string.match()只寻找源字串str中的第一个配对. 参数init可选, 指定搜寻过程的起点, 默认为1. 在成功配对时, 函数将返回配对表达式中的所有捕获结果; 如果没有设置捕获标记, 则返回整个配对字符串. 当没有成功的配对时, 返回nil。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>.<span class="built_in">match</span>(<span class="string">"I have 2 questions for you."</span>, <span class="string">"%d+ %a+"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>lua迭代器</strong></p>
+<ul>
+<li><p>泛型for迭代器,泛型 for 在自己内部保存迭代函数，实际上它保存三个值：迭代函数、状态常量、控制变量。泛型 for 迭代器提供了集合的 key/value 对</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法格式</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k,v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- k,v 为变量列表,pairs为表达式列表</span></span><br><span class="line"><span class="comment">-- 例子</span></span><br><span class="line">array = &#123;<span class="string">"Lua"</span>, <span class="string">"Tutorial"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> <span class="built_in">ipairs</span>(array)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(key,value)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>泛型for的执行过程</strong></p>
+<ol>
+<li>初始化，计算in后面表达式的值，表达式应该返回泛型 for 需要的三个值：迭代函数、状态常量、控制变量；与多值赋值一样，如果表达式返回的结果个数不足三个会自动用nil补足，多出部分会被忽略</li>
+<li>将状态常量和控制变量作为参数调用迭代函数（注意：对于for结构来说，状态常量没有用处，仅仅在初始化时获取他的值并传递给迭代函数）</li>
+<li>将迭代函数返回的值赋给变量列表</li>
+<li>如果返回的第一个值为nil循环结束，否则执行循环体</li>
+<li>回到第二步再次调用迭代函数</li>
+</ol>
+</li>
+<li><p><strong>无状态迭代器</strong></p>
+<blockquote>
+<p>无状态迭代器是指不保留任何状态的迭代器,因此在循环中我们可以利用无状态迭代器避免创建闭包花费额外的代价,每一次迭代,迭代函数都是用两个变量(状态常量和控制常量)的值作为参数被调用,一个无状态的迭代器只利用这两个值可以获取下一个元素</p>
+</blockquote>
+  <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用一个简单的函数来实现迭代器,实现数字n的平方:</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">square</span><span class="params">(iteratorMaxCount,currentNumber)</span></span></span><br><span class="line">    <span class="keyword">if</span> currentNumber &lt; iteratorMaxCount</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        currentNumber = currentNumber + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> currentNumebr, currentNumber*currentNumber</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i,n <span class="keyword">in</span> square,<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">    <span class="built_in">print</span>(i,n)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 迭代的状态包括被遍历的表(循环过程中不会改变的状态的常量)和当前的索引的下标(控制变量),ipairs和迭代函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">iter</span><span class="params">(a,i)</span></span></span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">local</span> v = a[i]</span><br><span class="line">    <span class="keyword">if</span> v <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">return</span> i,v</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ipairs</span><span class="params">(a)</span></span></span><br><span class="line">    <span class="keyword">return</span> iter, a, <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 当Lua调用ipairs(a)开始循环时，他获取三个值：迭代函数iter、状态常量a、控制变量初始值0；然后Lua调用iter(a,0)返回1,a[1]（除非a[1]=nil）；第二次迭代调用iter(a,1)返回2,a[2]……直到第一个nil元素</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多状态的迭代器</strong></p>
+<blockquote>
+<p>很多情况下,迭代器需要保存多个状态信息而不是简单的状态常量和控制变量,,还有一种方法是将所有的状态信息封装到table内,将table作为迭代器的状态常量,因为这种情况下可以将所有的信息存放在table内,所以迭代函数通常不需要第二个参数</p>
+</blockquote>
+  <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建自己的迭代器</span></span><br><span class="line">array = &#123;<span class="string">"lua"</span>,<span class="string">"tutorial"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">elementIterator</span><span class="params">(collection)</span></span> </span><br><span class="line">    <span class="keyword">local</span> index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">local</span> count = #collection</span><br><span class="line">    <span class="comment">-- 闭包函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">        index = index + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> </span><br><span class="line">            index &lt;= count</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">            <span class="comment">-- 返回迭代器的当前的元素</span></span><br><span class="line">            <span class="keyword">return</span> collection[index]</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> elementIterator(array)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(element)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>table表</strong></p>
+<blockquote>
+<p>table 是lua的一种数据结构用来帮我们创建不同的数据类型,如:数组,字典等<br>lua table 使用关联型数组,你可以用任意类型的值来做数组恩典索引,但是这个值不能是nil<br>lua也是通过table来解决模块(module),包(package)和对象(Object)的</p>
+</blockquote>
+  <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 初始化表</span></span><br><span class="line">mytable = &#123;&#125;</span><br><span class="line"><span class="comment">-- 指定值</span></span><br><span class="line">mytable[<span class="number">1</span>] = <span class="string">"lua"</span></span><br><span class="line"><span class="comment">-- 移除引用</span></span><br><span class="line">mytable = <span class="literal">nil</span></span><br><span class="line"><span class="comment">-- lua垃圾回收会释放内存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------------------</span></span><br><span class="line"><span class="comment">-- 我们为a设置元素,然后将a赋值给b,则a与b都指向同一个内存.如果a设置为nil,则b同样能访问table元素.如果没有指定的变量指向a,lua的垃圾回收机制会清理相对应的内存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 简单的table</span></span><br><span class="line">mytable = &#123;&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable的类型是 "</span>,<span class="built_in">type</span>(mytable))</span><br><span class="line">mytable[<span class="number">1</span>] = <span class="string">"lua"</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable 索引为1的元素是:"</span>,mytable[<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable 索引为wow的元素是"</span>,mytable[<span class="string">"wow"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">-- alternatetable和mytable是指向同一个table</span></span><br><span class="line">alternatetable = mytable</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"alternatetable索引为1的元素是 "</span>, alternatetable[<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable索引为wow的元素是 "</span>,alternatetable[<span class="string">"wow"</span>])</span><br><span class="line"></span><br><span class="line">alternatetable[<span class="string">"wow"</span>] = <span class="string">"修改后"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable索引为wow的元素是 "</span>,mytable[<span class="string">"wow"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 释放变量</span></span><br><span class="line">alternatetable = <span class="literal">nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"alternatetable是 "</span>,alternatetable)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- mytable 仍然可以访问</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable索引为wow的元素是 "</span>, mytable[<span class="string">"wow"</span>])</span><br><span class="line"></span><br><span class="line">mytbale = <span class="literal">nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"mytable是 "</span>,mytable)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>table 操作</strong></p>
+<ul>
+<li>常用的方法</li>
+</ul>
+</li>
+</ul>
+<style>
+table th:first-of-type {
+    width: 100px;
+}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法&amp;用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>table.concat(table[,sep[,start[,end]]]):<br>concat是concatenate(连锁, 连接)的缩写. table.concat()函数列出参数中指定table的数组部分从start位置到end位置的所有元素, 元素间以指定的分隔符(sep)隔开</td>
+</tr>
+<tr>
+<td>2</td>
+<td>table.insert(table,[pos[,value]]):<br>在table数组部分指定位置(pos)插入值为value的一个元素,pos参数可选,默认为数组部分末尾</td>
+</tr>
+<tr>
+<td>3</td>
+<td>table.maxn(table):<br>指定table中所有正数key值中最大的key值. 如果不存在key值为正数的元素, 则返回0。(Lua5.2之后该方法已经不存在了,本文使用了自定义函数实现)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>table.remove(table[,pos]):<br>返回table数组部分位于pos位置的元素. 其后的元素会被前移. pos参数可选, 默认为table长度, 即从最后一个元素删起</td>
+</tr>
+<tr>
+<td>5</td>
+<td>table.sort(table[,comp]):<br>对给定的table进行升序排列</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 方法实例:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- table连接</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用concat()方法来连接两个table</span></span><br><span class="line">fruits = &#123;<span class="string">"banana"</span>,<span class="string">"orange"</span>,<span class="string">"apple"</span>&#125;</span><br><span class="line"><span class="comment">-- 返回table连接后的字符串</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"连接后的字符串"</span>,<span class="built_in">table</span>.<span class="built_in">concat</span>(fruits))</span><br><span class="line"><span class="comment">-- 指定连接字符</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"连接后的字符串 "</span>,<span class="built_in">table</span>.<span class="built_in">concat</span>(fruits,<span class="string">", "</span>))</span><br><span class="line"><span class="comment">-- 指定索引来连接table</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"连接后的字符串 "</span>,<span class="built_in">table</span>.<span class="built_in">concat</span>(fruits,<span class="string">", "</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 插入和移除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 演示table的插入和移除操作</span></span><br><span class="line"><span class="comment">-- 在末尾插入</span></span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">insert</span>(fruits,<span class="string">"mango"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"索引为4的元素为 "</span>,fruits[<span class="number">4</span>])</span><br><span class="line"><span class="comment">-- 在索引为2的键处插入</span></span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">insert</span>(fruits,<span class="number">2</span>,<span class="string">"grapes"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"索引为2的元素为 "</span>,fruits[<span class="number">2</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"最后一个元素为 "</span>,fruits[<span class="number">5</span>])</span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">remove</span>(fruits)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"移除后最后一个元素为 "</span>,fruits[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">-- table排序</span></span><br><span class="line"></span><br><span class="line">fruits = &#123;<span class="string">"banana"</span>,<span class="string">"apple"</span>,<span class="string">"grapes"</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"排序前"</span>)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">ipairs</span>(fruits) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k,v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">table</span>.<span class="built_in">sort</span>(fruits)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"排序后"</span>)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">ipairs</span>(fruits) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k,v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- table最大值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 自定义table_maxn来实现</span></span><br><span class="line"><span class="comment">-- 获取table中的最大值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">table_maxn</span><span class="params">(t)</span></span></span><br><span class="line">    <span class="keyword">local</span> mn=<span class="literal">nil</span></span><br><span class="line">    <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">if</span>(mn==<span class="literal">nil</span>) <span class="keyword">then</span></span><br><span class="line">            mn=v</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">if</span> mn &lt; v <span class="keyword">then</span></span><br><span class="line">            mn = v</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> mn</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">tb1 = &#123;[<span class="number">1</span>] = <span class="number">2</span>, [<span class="number">2</span>] = <span class="number">6</span>, [<span class="number">3</span>] = <span class="number">34</span>, [<span class="number">26</span>] = <span class="number">5</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"tb1最大值: "</span>,table_maxn(tb1))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"tb1长度 "</span>,#tb1)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 代码执行的结果是: </span></span><br><span class="line"><span class="comment">-- tb1最大值: 34</span></span><br><span class="line"><span class="comment">-- tb1长度: 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 当我们获取 table 的长度的时候无论是使用 # 还是 table.getn 其都会在索引中断的地方停止计数，而导致无法正确取得 table 的长度。</span></span><br><span class="line"><span class="comment">-- 使用以下方法替换:</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">table_leng</span><span class="params">(t)</span></span></span><br><span class="line">    <span class="keyword">local</span> leng = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">        leng=leng+<span class="number">1</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> leng</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+            <a href="/tags/lua/" rel="tag"><i class="fa fa-tag"></i> lua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/01/rabbitMq基本用法/" rel="next" title="rabbitMq基本用法">
+                <i class="fa fa-chevron-left"></i> rabbitMq基本用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/13/redis实现分布式锁/" rel="prev" title="redis实现分布式锁">
+                redis实现分布式锁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avartar.jpg"
+                alt="zonzie" />
+            
+              <p class="site-author-name" itemprop="name">zonzie</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zonzie" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaobq13@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用语法"><span class="nav-number">1.</span> <span class="nav-text">常用语法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zonzie</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+        
+<span class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      总访问量:&nbsp;
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</span>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Rji1lKrSTpNODa6AqPDnMqIV-gzGzoHsz", "DVufT1L5TN6qD7qijs4BehQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

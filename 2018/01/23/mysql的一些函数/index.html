@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="zonzie's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="mysql的一些函数">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql的一些函数">
+<meta property="og:url" content="https://zonzie.gitee.io/2018/01/23/mysql的一些函数/index.html">
+<meta property="og:site_name" content="zonzie&#39;s notes">
+<meta property="og:description" content="mysql的一些函数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-22T10:38:38.755Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql的一些函数">
+<meta name="twitter:description" content="mysql的一些函数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonzie.gitee.io/2018/01/23/mysql的一些函数/"/>
+
+
+
+
+
+  <title>mysql的一些函数 | zonzie's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zonzie's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-notes">
+          <a href="/notes/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            札记
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zonzie.gitee.io/2018/01/23/mysql的一些函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zonzie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zonzie's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql的一些函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T20:03:45+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/23/mysql的一些函数/" class="leancloud_visitors" data-flag-title="mysql的一些函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  mysql的一些函数
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h5><ul>
+<li><code>ascii(str)</code> 返回字符串str的第一个字符的ascii值(str是空串时返回0)</li>
+<li><code>ord(str)</code> 返回 若字符串str的最左字符是一个多字节字符,则返回该字符的代码,代码的计算通过使用以下公式计算其组成字节的数值而得出: (1st byte code) + (2nd byte code × 256) + (3rd byte code × 256^2) …</li>
+<li><p><code>conv(n,from_base,to_base)</code> 对数字n进制转换,并转换为字串返回(任何参数为null时返回null,进制范围为2-36进制,当to_base是负数时n作为有符号数否则作无符号数,conv以64位点精度工作) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select conv(&quot;a&quot;,16,2);  </span><br><span class="line">　　-&gt; &apos;1010&apos;   </span><br><span class="line">mysql&gt; select conv(&quot;6e&quot;,18,8);    </span><br><span class="line">　　-&gt; &apos;172&apos;   </span><br><span class="line">mysql&gt; select conv(-17,10,-18);  </span><br><span class="line">　　-&gt; &apos;-h&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>bin(n)</code> 把n转为二进制值并以字串返回(n是bigint数字,等价于conv(n,10,2))  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select bin(12);     </span><br><span class="line">　　-&gt; &apos;1100&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>oct(n)</code> 把n转为八进制值并以字串返回(n是bigint数字,等价于conv(n,10,8))</p>
+</li>
+<li><code>hex(n)</code> 把n转为十六进制并以字串返回(n是bigint数字,等价于conv(n,10,16))</li>
+<li><p><code>char(n,...)</code> 返回由参数n,…对应的ascii代码字符组成的一个字串(参数是n,…是数字序列,null值被跳过)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select char(77,121,83,81,&apos;76&apos;);  </span><br><span class="line">　　-&gt; &apos;mysql&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>concat(str1,str2,...)</code> 把参数连成一个长字符串并返回(任何参数是null时返回null)</p>
+</li>
+<li><code>length(str)</code>,<code>octet_length(str)</code>,<code>char_length(str)</code>,<code>character_length(str)</code> 返回字符串str的长度(对于多字节字符char_length仅计算一次)</li>
+<li><p><code>locate(substr,str)</code>,<code>position(substr in str)</code> 返回字符串substr在字符串str第一次出现的位置(str不包含substr时返回0) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select locate(&apos;bar&apos;, &apos;foobarbar&apos;);  </span><br><span class="line">　　-&gt; 4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>locate(substr,str,pos)</code> 返回字符串substr在字符串str的第pos个位置起第一次出现的位置(str不包含substr时返回0)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select locate(&apos;bar&apos;, &apos;foobarbar&apos;,5);  </span><br><span class="line">　　-&gt; 7</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>instr(str,substr)</code> 返回字符串substr在字符串str第一次出现的位置(str不包含substr时返回0)</p>
+</li>
+<li><p><code>lpad(str,len,padstr)</code> 用字符串padstr填补str左端直到字串长度为len并返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select lpad(&apos;hi&apos;,4,&apos;??*&apos;);  </span><br><span class="line">　　-&gt; &apos;??hi&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>rpad(str,len,padstr)</code> 用字符串padstr填补str右端直到字串长度为len并返回</p>
+</li>
+<li><code>left(str,len)</code> 返回字符串str的左端len个字符</li>
+<li><code>right(str,len)</code> 返回字符串str的右端len个字符</li>
+<li><code>substring(str,pos,len)</code>,<code>substring(str from pos for len)</code>,<code>mid(str,pos,len)</code> 返回字符串str的位置pos起len个字符</li>
+<li><code>substring(str,pos)</code>,<code>substring(str from pos)</code> 返回字符串str的位置pos起的一个子串</li>
+<li><p><code>substring_index(str,delim,count)</code> 返回从字符串str的第count个出现的分隔符delim之后的子串(count为正数时返回左端,否则返回右端子串)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select substring_index(&apos;www.mysql.com&apos;, &apos;.&apos;, 2);  </span><br><span class="line">　　-&gt; &apos;www.mysql&apos; </span><br><span class="line">mysql&gt; select substring_index(&apos;www.mysql.com&apos;, &apos;.&apos;, -2);  </span><br><span class="line">　　-&gt; &apos;mysql.com&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ltrim(str)</code> 返回删除了左空格的字符串str</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ltrim(&apos;  barbar&apos;);  </span><br><span class="line">　　-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>rtrim(str)</code> 返回删除了右空格的字符串str</p>
+</li>
+<li><p><code>trim([[both | leading | trailing] [remstr] from] str)</code> 返回前缀或后缀remstr被删除了的字符串str(位置参数默认both,remstr默认值为空格)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select trim(&apos;  bar   &apos;);  </span><br><span class="line">　　-&gt; &apos;bar&apos; </span><br><span class="line">mysql&gt; select trim(leading &apos;x&apos; from &apos;xxxbarxxx&apos;);  </span><br><span class="line">　　-&gt; &apos;barxxx&apos; </span><br><span class="line">mysql&gt; select trim(both &apos;x&apos; from &apos;xxxbarxxx&apos;);  </span><br><span class="line">　　-&gt; &apos;bar&apos; </span><br><span class="line">mysql&gt; select trim(trailing &apos;xyz&apos; from &apos;barxxyz&apos;);  </span><br><span class="line">　　-&gt; &apos;barx&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>soundex(str)</code> 返回str的一个同音字符串(听起来“大致相同”字符串有相同的同音字符串,非数字字母字符被忽略,在a-z外的字母被当作元音)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select soundex(&apos;hello&apos;);  </span><br><span class="line">　　-&gt; &apos;h400&apos; </span><br><span class="line">mysql&gt; select soundex(&apos;quadratically&apos;);  </span><br><span class="line">　　-&gt; &apos;q36324&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>space(n)</code> 返回由n个空格字符组成的一个字符串</p>
+</li>
+<li><code>replace(str,from_str,to_str)</code> 用字符串to_str替换字符串str中的子串from_str并返回</li>
+<li><code>reverse(str)</code> 颠倒字符串str的字符顺序并返回</li>
+<li><code>insert(str,pos,len,newstr)</code> 把字符串str由位置pos起len个字符长的子串替换为字符串<br>newstr并返回 </li>
+<li><code>elt(n,str1,str2,str3,...)</code> 返回第n个字符串(n小于1或大于参数个数返回null)  </li>
+<li><code>field(str,str1,str2,str3,...)</code> 返回str等于其后的第n个字符串的序号(如果str没找到返回0)</li>
+<li><code>find_in_set(str,strlist)</code> 返回str在字符串集strlist中的序号(任何参数是null则返回null,如果str没找到返回0,参数1包含”,”时工作异常)</li>
+<li><p><code>make_set(bits,str1,str2,...)</code> 把参数bits的数字转为二进制,假如某个位置的二进制位等于bits,对应位置的字串选入字串集并返回(null串不添加到结果中) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select make_set(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;);  </span><br><span class="line">　　-&gt; &apos;a&apos; </span><br><span class="line">mysql&gt; select make_set(1 | 4,&apos;hello&apos;,&apos;nice&apos;,&apos;world&apos;);  </span><br><span class="line">　　-&gt; &apos;hello,world&apos; </span><br><span class="line">mysql&gt; select make_set(0,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;);  </span><br><span class="line">　　-&gt; &apos;&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>export_set(bits,on,off,[separator,[number_of_bits]])</code> 按bits排列字符串集,只有当位等于1时插入字串on,否则插入off(separator默认值”,”,number_of_bits参数使用时长度不足补0而过长截断)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select export_set(5,&apos;y&apos;,&apos;n&apos;,&apos;,&apos;,4)  </span><br><span class="line">　　-&gt; y,n,y,n</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>lcase(str)</code>,<code>lower(str)</code> 返回小写的字符串str</p>
+</li>
+<li><code>ucase(str)</code>,<code>upper(str)</code> 返回大写的字符串str</li>
+<li><code>load_file(file_name)</code> 读入文件并且作为一个字符串返回文件内容(文件无法找到,路径不完整,没有权限,长度大于max_allowed_packet会返回null)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update table_name set blob_column=load_file  </span><br><span class="line">(&quot;/tmp/picture&quot;) where id=1;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h5><ul>
+<li><code>abs(n)</code> 返回n的绝对值 </li>
+<li><code>sign(n)</code> 返回参数的符号(为-1、0或1)</li>
+<li><code>mod(n,m)</code> 取模运算,返回n被m除的余数(同%操作符)</li>
+<li><code>floor(n)</code> 返回不大于n的最大整数值</li>
+<li><code>ceiling(n)</code> 返回不小于n的最小整数值</li>
+<li><code>round(n,d)</code> 返回n的四舍五入值,保留d位小数(d的默认值为0)</li>
+<li><code>exp(n)</code> 返回值e的n次方(自然对数的底)</li>
+<li><code>log(n)</code> 返回n的自然对数</li>
+<li><code>log10(n)</code> 返回n以10为底的对数</li>
+<li><code>pow(x,y)</code>,<code>power(x,y)</code> 返回值x的y次幂</li>
+<li><code>sqrt(n)</code> 返回非负数n的平方根</li>
+<li><code>pi()</code> 返回圆周率</li>
+<li><code>cos(n)</code> 返回n的余弦值</li>
+<li><code>sin(n)</code> 返回n的正弦值</li>
+<li><code>tan(n)</code> 返回n的正切值</li>
+<li><code>acos(n)</code> 返回n反余弦(n是余弦值,在-1到1的范围,否则返回null)</li>
+<li><code>asin(n)</code> 返回n反正弦值</li>
+<li><code>atan(n)</code> 返回n的反正切值 </li>
+<li><code>atan2(x,y)</code> 返回2个变量x和y的反正切(类似y/x的反正切,符号决定象限)</li>
+<li><code>cot(n)</code> 返回x的余切 </li>
+<li><code>rand()</code>,<code>rand(n)</code> 返回在范围0到1.0内的随机浮点值(可以使用数字n作为初始值)</li>
+<li><code>degrees(n)</code> 把n从弧度变换为角度并返回</li>
+<li><code>radians(n)</code> 把n从角度变换为弧度并返回</li>
+<li><code>truncate(n,d)</code> 保留数字n的d位小数并返回</li>
+<li><code>least(x,y,...)</code> 返回最小值(如果返回值被用在整数(实数或大小敏感字串)上下文或所有参数都是整数(实数或大小敏感字串)则他们作为整数(实数或大小敏感字串)比较,否则按忽略大小写的字符串被比较)</li>
+<li><code>greatest(x,y,...)</code> 返回最大值(其余同least())</li>
+</ul>
+<h5 id="时间日期函数"><a href="#时间日期函数" class="headerlink" title="时间日期函数"></a>时间日期函数</h5><ul>
+<li><code>dayofweek(date)</code> 返回日期date是星期几(1=星期天,2=星期一,……7=星期六,odbc标准)</li>
+<li><code>weekday(date)</code> 返回日期date是星期几(0=星期一,1=星期二,……6= 星期天)</li>
+<li><code>dayofmonth(date)</code> 返回date是一月中的第几日(在1到31范围内)</li>
+<li><code>dayofyear(date)</code> 返回date是一年中的第几日(在1到366范围内)</li>
+<li><code>month(date)</code> 返回date中的月份数值</li>
+<li><code>dayname(date)</code> 返回date是星期几(按英文名返回)</li>
+<li><code>monthname(date)</code> 返回date是几月(按英文名返回) </li>
+<li><code>quarter(date)</code> 返回date是一年的第几个季度</li>
+<li><code>week(date,first)</code> 返回date是一年的第几周(first默认值0,first取值1表示周一是周的开始,0从周日开始) </li>
+<li><p><code>year(date)</code> 返回date的年份(范围在1000到9999)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select year(&apos;98-02-03&apos;);    </span><br><span class="line">　　-&gt; 1998</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>hour(time)</code> 返回time的小时数(范围是0到23)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select hour(&apos;10:05:03&apos;);    </span><br><span class="line">　　-&gt; 10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>minute(time)</code> 返回time的分钟数(范围是0到59)</p>
+</li>
+<li><code>second(time)</code> 返回time的秒数(范围是0到59)</li>
+<li><p><code>period_add(p,n)</code> 增加n个月到时期p并返回(p的格式yymm或yyyymm)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select period_add(9801,2);    </span><br><span class="line">　　-&gt; 199803</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>period_diff(p1,p2)</code> 返回在时期p1和p2之间月数(p1和p2的格式yymm或yyyymm)</p>
+</li>
+<li><p><code>date_add(date,interval expr type)</code><br>  <code>date_sub(date,interval expr type)</code><br>  <code>adddate(date,interval expr type)</code><br>  <code>subdate(date,interval expr type)</code><br>对日期时间进行加减法运算,adddate()和subdate()是date_add()和date_sub()的同义词,也<br>可以用运算符+和-而不是函数,date是一个datetime或date值,expr对date进行加减法的一个表<br>达式字符串,type指明表达式expr应该如何被解释<br>　[type值 含义 期望的expr格式]:<br>　second 秒 seconds<br>　minute 分钟 minutes<br>　hour 时间 hours<br>　day 天 days<br>　month 月 months<br>　year 年 years<br>　minute_second 分钟和秒 “minutes:seconds”<br>　hour_minute 小时和分钟 “hours:minutes”<br>　day_hour 天和小时 “days hours”<br>　year_month 年和月 “years-months”<br>　hour_second 小时, 分钟， “hours:minutes:seconds”<br>　day_minute 天, 小时, 分钟 “days hours:minutes”<br>　day_second 天, 小时, 分钟, 秒 “days<br>hours:minutes:seconds”<br>　expr中允许任何标点做分隔符,如果所有是date值时结果是一个<br>date值,否则结果是一个datetime值<br>　如果type关键词不完整,则mysql从右端取值,day_second因为缺<br>少小时分钟等于minute_second<br>　如果增加month、year_month或year,天数大于结果月份的最大天<br>数则使用最大天数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select &quot;1997-12-31 23:59:59&quot; + interval 1 second;  </span><br><span class="line">　　-&gt; 1998-01-01 00:00:00    </span><br><span class="line">mysql&gt; select interval 1 day + &quot;1997-12-31&quot;;    </span><br><span class="line">　　-&gt; 1998-01-01    </span><br><span class="line">mysql&gt; select &quot;1998-01-01&quot; - interval 1 second;    </span><br><span class="line">　　-&gt; 1997-12-31 23:59:59    </span><br><span class="line">mysql&gt; select date_add(&quot;1997-12-31 23:59:59&quot;,interval 1</span><br><span class="line">second);    </span><br><span class="line">　　-&gt; 1998-01-01 00:00:00    </span><br><span class="line">mysql&gt; select date_add(&quot;1997-12-31 23:59:59&quot;,interval 1</span><br><span class="line">day);    </span><br><span class="line">　　-&gt; 1998-01-01 23:59:59    </span><br><span class="line">mysql&gt; select date_add(&quot;1997-12-31 23:59:59&quot;,interval</span><br><span class="line">&quot;1:1&quot; minute_second);    </span><br><span class="line">　　-&gt; 1998-01-01 00:01:00    </span><br><span class="line">mysql&gt; select date_sub(&quot;1998-01-01 00:00:00&quot;,interval &quot;1</span><br><span class="line">1:1:1&quot; day_second);    </span><br><span class="line">　　-&gt; 1997-12-30 22:58:59    </span><br><span class="line">mysql&gt; select date_add(&quot;1998-01-01 00:00:00&quot;, interval &quot;-1</span><br><span class="line">10&quot; day_hour);  </span><br><span class="line">　　-&gt; 1997-12-30 14:00:00    </span><br><span class="line">mysql&gt; select date_sub(&quot;1998-01-02&quot;, interval 31 day);    </span><br><span class="line">　　-&gt; 1997-12-02    </span><br><span class="line">mysql&gt; select extract(year from &quot;1999-07-02&quot;);    </span><br><span class="line">　　-&gt; 1999    </span><br><span class="line">mysql&gt; select extract(year_month from &quot;1999-07-02</span><br><span class="line">01:02:03&quot;);    </span><br><span class="line">　　-&gt; 199907    </span><br><span class="line">mysql&gt; select extract(day_minute from &quot;1999-07-02</span><br><span class="line">01:02:03&quot;);    </span><br><span class="line">　　-&gt; 20102</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>to_days(date)</code> 返回日期date是西元0年至今多少天(不计算1582年以前)</p>
+</li>
+<li><code>from_days(n)</code> 给出西元0年至今多少天返回date值(不计算1582年以前)   </li>
+<li><code>date_format(date,format)</code> 根据format字符串格式化date值  <ul>
+<li>在format字符串中可用标志符:  <pre><code>%m 月名字(january……december)    
+%w 星期名字(sunday……saturday)    
+%d 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。）    
+%y 年, 数字, 4 位    
+%y 年, 数字, 2 位    
+%a 缩写的星期名字(sun……sat)    
+%d 月份中的天数, 数字(00……31)    
+%e 月份中的天数, 数字(0……31)    
+%m 月, 数字(01……12)    
+%c 月, 数字(1……12)    
+%b 缩写的月份名字(jan……dec)    
+%j 一年中的天数(001……366)    
+%h 小时(00……23)    
+%k 小时(0……23)    
+%h 小时(01……12)    
+%i 小时(01……12)    
+%l 小时(1……12)    
+%i 分钟, 数字(00……59)    
+%r 时间,12 小时(hh:mm:ss [ap]m)    
+%t 时间,24 小时(hh:mm:ss)    
+%s 秒(00……59)    
+%s 秒(00……59)    
+%p am或pm    
+%w 一个星期中的天数(0=sunday ……6=saturday ）    
+%u 星期(0……52), 这里星期天是星期的第一天    
+%u 星期(0……52), 这里星期一是星期的第一天    
+%% 字符%
+</code></pre></li>
+</ul>
+</li>
+<li><code>curdate()</code>,<code>current_date()</code> 以’yyyy-mm-dd’或yyyymmdd格式返回当前日期值(根据返回值所处上下文是字符串或数字)</li>
+<li><code>curtime()</code>,<code>current_time()</code> 以’hh:mm:ss’或hhmmss格式返回当前时间值(根据返回值所处上下文是字符串或数字)</li>
+<li><code>now()</code>,<code>sysdate()</code>,<code>current_timestamp()</code> 　以’yyyy-mm-dd hh:mm:ss’或yyyymmddhhmmss格式返回当前日期时间(根据返回值所处上下文是字符串或数字) </li>
+<li><code>unix_timestamp()</code>,<code>unix_timestamp(date)</code> 返回一个unix时间戳(从’1970-01-01 00:00:00’gmt开始的秒数,date默认值为当前时间)</li>
+<li><code>from_unixtime(unix_timestamp)</code> 以’yyyy-mm-dd hh:mm:ss’或yyyymmddhhmmss格式返回时间戳的值(根据返回值所处上下文是字符串或数字)</li>
+<li><code>from_unixtime(unix_timestamp,format)</code> 以format字符串格式返回时间戳的值</li>
+<li><code>sec_to_time(seconds)</code> 以’hh:mm:ss’或hhmmss格式返回秒数转成的time值(根据返回值所处上下文是字符串或数字)</li>
+<li><code>time_to_sec(time)</code> 返回time值有多少秒 </li>
+</ul>
+<h5 id="转换函数"><a href="#转换函数" class="headerlink" title="转换函数"></a>转换函数</h5><ul>
+<li><code>cast</code><ul>
+<li>用法：cast(字段 as 数据类型) [当然是否可以成功转换，还要看数据类型强制转化时注意的问题]</li>
+<li>实例：select cast(a as unsigned) as b from cardserver where order by b desc;</li>
+</ul>
+</li>
+<li><code>convert</code><ul>
+<li>用法：convert(字段,数据类型)</li>
+<li>实例：select convert(a ,unsigned) as b from cardserver where order by b desc;</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/19/给本站配置https/" rel="next" title="给本站配置一级域名以及https">
+                <i class="fa fa-chevron-left"></i> 给本站配置一级域名以及https
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/04/java8中的函数式编程/" rel="prev" title="java8中的函数式编程">
+                java8中的函数式编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avartar.jpg"
+                alt="zonzie" />
+            
+              <p class="site-author-name" itemprop="name">zonzie</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zonzie" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaobq13@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串函数"><span class="nav-number">1.</span> <span class="nav-text">字符串函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数学函数"><span class="nav-number">2.</span> <span class="nav-text">数学函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间日期函数"><span class="nav-number">3.</span> <span class="nav-text">时间日期函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#转换函数"><span class="nav-number">4.</span> <span class="nav-text">转换函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zonzie</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+        
+<span class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      总访问量:&nbsp;
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</span>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Rji1lKrSTpNODa6AqPDnMqIV-gzGzoHsz", "DVufT1L5TN6qD7qijs4BehQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

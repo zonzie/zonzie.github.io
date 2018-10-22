@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="elasticSearch," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="zonzie's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="es操作笔记">
+<meta name="keywords" content="elasticSearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticSearch操作笔记">
+<meta property="og:url" content="https://zonzie.gitee.io/2018/09/18/elasticSearch-operation-note/index.html">
+<meta property="og:site_name" content="zonzie&#39;s notes">
+<meta property="og:description" content="es操作笔记">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-22T10:38:38.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticSearch操作笔记">
+<meta name="twitter:description" content="es操作笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonzie.gitee.io/2018/09/18/elasticSearch-operation-note/"/>
+
+
+
+
+
+  <title>elasticSearch操作笔记 | zonzie's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zonzie's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-notes">
+          <a href="/notes/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            札记
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zonzie.gitee.io/2018/09/18/elasticSearch-operation-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zonzie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zonzie's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">elasticSearch操作笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-18T21:43:10+08:00">
+                2018-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/elasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/18/elasticSearch-operation-note/" class="leancloud_visitors" data-flag-title="elasticSearch操作笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  es操作笔记
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="es中的一些基本概念"><a href="#es中的一些基本概念" class="headerlink" title="es中的一些基本概念"></a>es中的一些基本概念</h4><h5 id="Near-RealTime-NRT近实时"><a href="#Near-RealTime-NRT近实时" class="headerlink" title="Near RealTime(NRT近实时)"></a>Near RealTime(NRT近实时)</h5><p>elasticSearch是一个近实时的搜索平台, 从索引一个文档开始直到它可以被查询会有轻微的延迟</p>
+<h5 id="cluster-集群"><a href="#cluster-集群" class="headerlink" title="cluster(集群)"></a>cluster(集群)</h5><p>cluster是一个或者多个节点的集合, 它们一起保存数据并且提供所有的节点联合索引以及搜索功能. 集群存在一个唯一的名字身份且默认为”elasticSearch”. 这个名字很重要, 如果节点安装时, 通过自己的名字加入到集群中的话, 那么一个节点只能是一个集群的一部分</p>
+<h5 id="Node-节点"><a href="#Node-节点" class="headerlink" title="Node(节点)"></a>Node(节点)</h5><p>节点是一个单独的服务器, 是集群的一部分, 存储数据, 参与集群中的索引和搜索功能, 节点可以单独运行, 形成单节点集群</p>
+<h5 id="index-索引"><a href="#index-索引" class="headerlink" title="index(索引)"></a>index(索引)</h5><p>index是具有稍微类似特征文档的集合. 比如一个消费者数据的索引, 产品目录的索引, 订单数据的索引. 索引通过名字(小写)来标识, 并且名字在对document(文档)执行indexing(索引), search(搜索), update(更新), delete(删除)操作时会涉及到. 一个单独的集群中, 可以定义想要的索引</p>
+<h5 id="Type-类型"><a href="#Type-类型" class="headerlink" title="Type(类型)"></a>Type(类型)</h5><p>在index(索引)中, 可以定义一个或者多个类型. 一个类型是索引中的一个逻辑的种类/分区,语义完全取决于自己. 一般情况下, 一个类型被定义成一组常见的文档. 假设我们在一个单独的索引中存储了一个博客平台的所有数据, 在这个索引中, 可能定义了一个用户数据类, 博客数据类型和评论数据类型</p>
+<h5 id="Document-文档"><a href="#Document-文档" class="headerlink" title="Document(文档)"></a>Document(文档)</h5><p>document是索引信息的基本单位. 例如存储customer数据的文档,存储product数据的文档,存储order数据的文档</p>
+<h5 id="Shards-amp-Replicas-分片-amp-副本"><a href="#Shards-amp-Replicas-分片-amp-副本" class="headerlink" title="Shards &amp; Replicas (分片 &amp; 副本)"></a>Shards &amp; Replicas (分片 &amp; 副本)</h5><p>索引可以存储大量的数据, 可以超过单个节点的硬件限制. 为了解决这个问题, elasticSearch提供了把index(索引)拆分到多个Shard(分片)中的能力. 在创建索引时, 可以简单的定义Shard(分片)的数量. 每个Shard本身就是一个fully-functional(全功能的)和独立的”index”, Shard可以存储到集群中的任何节点</p>
+<h6 id="Sharding-分片-非常重要的理由"><a href="#Sharding-分片-非常重要的理由" class="headerlink" title="Sharding(分片) 非常重要的理由:"></a>Sharding(分片) 非常重要的理由:</h6><ul>
+<li>水平的拆分/扩展</li>
+<li>分布式的并行跨Shard操作(可能在多个节点), 从而提高了性能/吞吐量<br>每个索引可以被拆分成多个分片, 一个索引可以0个或者多个副本,开启副本后, 将会有主分片和副本分片,分片和副本的数量可以在索引被创建时指定,也可以在任何时候修改副本的数量, 但是不能修改分片的数量<br>默认情况下, es中的每个索引分配了5个主分片和1个副本,如果集群中有两个节点, 则会有5个主分片和5个副本分片</li>
+</ul>
+<h4 id="基本的一些命令"><a href="#基本的一些命令" class="headerlink" title="基本的一些命令"></a>基本的一些命令</h4><h5 id="查看集群的健康程度"><a href="#查看集群的健康程度" class="headerlink" title="查看集群的健康程度"></a>查看集群的健康程度</h5><p><code>curl -XGET &#39;localhost:9200/_cat/health?v&amp;pretty&#39;</code></p>
+<h5 id="获取集群节点的列表"><a href="#获取集群节点的列表" class="headerlink" title="获取集群节点的列表"></a>获取集群节点的列表</h5><p><code>curl -XGET &#39;localhost:9200/_cat/nodes?v&amp;pretty&#39;</code></p>
+<h5 id="列出所有的索引"><a href="#列出所有的索引" class="headerlink" title="列出所有的索引"></a>列出所有的索引</h5><p><code>curl -XGET &#39;localhost:9200/_cat/indices?v&amp;pretty&#39;</code></p>
+<h5 id="创建索引customer"><a href="#创建索引customer" class="headerlink" title="创建索引customer"></a>创建索引customer</h5><p><code>curl -XPUT &#39;localhost:9200/customer?pretty&amp;pretty&#39;</code></p>
+<h5 id="创建一个customer文档到customer索引中-‘external’类型-ID为1"><a href="#创建一个customer文档到customer索引中-‘external’类型-ID为1" class="headerlink" title="创建一个customer文档到customer索引中, ‘external’类型, ID为1"></a>创建一个customer文档到customer索引中, ‘external’类型, ID为1</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPUT <span class="string">'localhost:9200/customer/external/1?pretty&amp;pretty'</span> -d `</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"john doe"</span></span><br><span class="line">&#125;`</span><br></pre></td></tr></table></figure>
+<h5 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h5><p><code>curl -XDELETE &#39;localhost:9200/customer?pretty&amp;pretty&#39;</code></p>
+<h5 id="不指定id可以用POST请求创建一个新的文档-id会自动生成"><a href="#不指定id可以用POST请求创建一个新的文档-id会自动生成" class="headerlink" title="不指定id可以用POST请求创建一个新的文档,id会自动生成"></a>不指定id可以用POST请求创建一个新的文档,id会自动生成</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'localhost:9200/customer/external?pretty&amp;pretty'</span> -d<span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "name": "John Doe"</span></span><br><span class="line"><span class="string">&#125;`</span></span><br></pre></td></tr></table></figure>
+<h5 id="更新文档"><a href="#更新文档" class="headerlink" title="更新文档"></a>更新文档</h5><p>使用POST方法,修改name,添加age字段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'localhost:9200/customer/external/1/_update?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    "doc": &#123;</span></span><br><span class="line"><span class="string">        "name": "Jane Doe",</span></span><br><span class="line"><span class="string">        "age": 20</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>使用PUT方法,修改name,添加age字段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPUT <span class="string">'localhost:9200/customer/external/1/_update?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "name": "james Doe"</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>使用脚本更新年龄<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'localhost:9200/customer/external/1/_udpate?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "script": "ctx._source.age += 5"</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="删除文档"><a href="#删除文档" class="headerlink" title="删除文档"></a>删除文档</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XDELETE &apos;localhost:9200/customer/external/2?pretty&amp;pretty&apos;</span><br></pre></td></tr></table></figure>
+<h5 id="批量操作"><a href="#批量操作" class="headerlink" title="批量操作"></a>批量操作</h5><p>批量插入数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'192.168.198.88:9200/customer/external/_bulk?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;"index": &#123;"_id": "5"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"name": "john dow"&#125;</span></span><br><span class="line"><span class="string">&#123;"index": &#123;"_id": "6"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"name": "jane wick"&#125;</span></span><br><span class="line"><span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>批量更新数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPUT <span class="string">'192.168.198.88:9200/customer/external/_bulk?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;"index": &#123;"_id": "5"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"name": "john dow"&#125;</span></span><br><span class="line"><span class="string">&#123;"index": &#123;"_id": "6"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"name": "jane wick"&#125;</span></span><br><span class="line"><span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<p>更新id=5的文档, 删除id=6的文档<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'192.168.198.88:9200/customer/external/_bulk?pretty&amp;pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;"update": &#123;"_id":"5"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"doc": &#123;"name": "John doe becomes Jane Doe"&#125;&#125;</span></span><br><span class="line"><span class="string">&#123;"delete": &#123;"_id":"6"&#125;&#125;</span></span><br><span class="line"><span class="string">'</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="数据探索部分"><a href="#数据探索部分" class="headerlink" title="数据探索部分"></a>数据探索部分</h4><p>使用REST reqeust URI发送搜索参数<br><br>查询index为customer下的所有的文档<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span></span><br></pre></td></tr></table></figure></p>
+<p>使用REST request body发送请求, 使用POST或者GET, 一般浏览器会默认抛弃掉GET请求的请求体, 使用POST比较保险<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XPOST <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;"match_all": &#123;&#125;&#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="返回的数据主要有以下几部分"><a href="#返回的数据主要有以下几部分" class="headerlink" title="返回的数据主要有以下几部分:"></a>返回的数据主要有以下几部分:</h5><ul>
+<li>took: es执行搜索的耗时(ms)</li>
+<li>time_out: 搜索是否超时</li>
+<li>_shards: 告诉我们搜索了多少分片,统计了成功/失败的分片</li>
+<li>hits: 搜索的结果</li>
+<li>hits.hits: 实际的搜索结果数组(默认为前10的文档)</li>
+<li>sort: 结果的排序key(没有则按照score排序)</li>
+<li>score</li>
+</ul>
+<h5 id="DSL-Domain-Specific-Language-领域特定语言"><a href="#DSL-Domain-Specific-Language-领域特定语言" class="headerlink" title="DSL(Domain-Specific Language, 领域特定语言)"></a>DSL(Domain-Specific Language, 领域特定语言)</h5><p>elasticSearch提供了可执行查询的Json风格的DSL. 这个查询语言非常全面,我们从基础开始<br><br>查询customer中的一条数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'192.168.198.88:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "match_all": &#123;&#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>添加查询的分页,from:指定文档开始的编号,size:返回的条数,sort:指定排序的字段和规则<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;"match_all": &#123;&#125;&#125;,</span></span><br><span class="line"><span class="string">    "from": 10,</span></span><br><span class="line"><span class="string">    "size": 10,</span></span><br><span class="line"><span class="string">    "sort": &#123;</span></span><br><span class="line"><span class="string">        "age": &#123;</span></span><br><span class="line"><span class="string">            "order": "desc"</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>返回指定字段name和age<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "match_all": &#123;&#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    "_source": ["name", "age"]</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>返回年龄为20的customer<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "match": &#123;</span></span><br><span class="line"><span class="string">            "age": 20</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>返回所有name中包含john的customer, 不是精确匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "match": &#123;</span></span><br><span class="line"><span class="string">            "name": "john"</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>精确匹配一个单词或者短语<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;"match_phrase": &#123;</span></span><br><span class="line"><span class="string">        "name": "john"</span></span><br><span class="line"><span class="string">    &#125;&#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<h6 id="bool查询"><a href="#bool查询" class="headerlink" title="bool查询"></a>bool查询</h6><p>使用boolean逻辑构建较小的查询到更大的查询中去<br><br>返回name中同时包含john和jane的文档<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Contetn-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "bool": &#123;</span></span><br><span class="line"><span class="string">            "must": [</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "john"&#125;&#125;,</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "jane"&#125;&#125;</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>上面的例子中, bool must 语句指定了所有的查询必须为true时匹配到的文档<br><br>如果两个名字是或的关系,例子如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Contetn-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "bool": &#123;</span></span><br><span class="line"><span class="string">            "should": [</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "john"&#125;&#125;,</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "jane"&#125;&#125;</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>bool should中只要有一个为true就会匹配到<br><br>如果两者都不想匹配到<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "bool": &#123;</span></span><br><span class="line"><span class="string">            "must_not": [</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "john"&#125;&#125;,</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "jane"&#125;&#125;</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<p>以上如果条件都不为true才会匹配到文档<br><br>我们可以在bool查询中同时联合使用must, should, must_not<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"Content-Type:application/json"</span> -XGET <span class="string">'localhost:9200/customer/_search?pretty'</span> -d <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "query": &#123;</span></span><br><span class="line"><span class="string">        "bool": &#123;</span></span><br><span class="line"><span class="string">            "must": [</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"age": 40&#125;&#125;</span></span><br><span class="line"><span class="string">            ],</span></span><br><span class="line"><span class="string">            "must_not": [</span></span><br><span class="line"><span class="string">                &#123;"match": &#123;"name": "jane"&#125;&#125;</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<h6 id="过滤查询"><a href="#过滤查询" class="headerlink" title="过滤查询"></a>过滤查询</h6>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/elasticSearch/" rel="tag"><i class="fa fa-tag"></i> elasticSearch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/17/cache-problem/" rel="next" title="缓存系统的问题">
+                <i class="fa fa-chevron-left"></i> 缓存系统的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avartar.jpg"
+                alt="zonzie" />
+            
+              <p class="site-author-name" itemprop="name">zonzie</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zonzie" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaobq13@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#es中的一些基本概念"><span class="nav-number">1.</span> <span class="nav-text">es中的一些基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Near-RealTime-NRT近实时"><span class="nav-number">1.1.</span> <span class="nav-text">Near RealTime(NRT近实时)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cluster-集群"><span class="nav-number">1.2.</span> <span class="nav-text">cluster(集群)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Node-节点"><span class="nav-number">1.3.</span> <span class="nav-text">Node(节点)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#index-索引"><span class="nav-number">1.4.</span> <span class="nav-text">index(索引)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Type-类型"><span class="nav-number">1.5.</span> <span class="nav-text">Type(类型)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Document-文档"><span class="nav-number">1.6.</span> <span class="nav-text">Document(文档)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Shards-amp-Replicas-分片-amp-副本"><span class="nav-number">1.7.</span> <span class="nav-text">Shards & Replicas (分片 & 副本)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Sharding-分片-非常重要的理由"><span class="nav-number">1.7.1.</span> <span class="nav-text">Sharding(分片) 非常重要的理由:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本的一些命令"><span class="nav-number">2.</span> <span class="nav-text">基本的一些命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看集群的健康程度"><span class="nav-number">2.1.</span> <span class="nav-text">查看集群的健康程度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取集群节点的列表"><span class="nav-number">2.2.</span> <span class="nav-text">获取集群节点的列表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#列出所有的索引"><span class="nav-number">2.3.</span> <span class="nav-text">列出所有的索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建索引customer"><span class="nav-number">2.4.</span> <span class="nav-text">创建索引customer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建一个customer文档到customer索引中-‘external’类型-ID为1"><span class="nav-number">2.5.</span> <span class="nav-text">创建一个customer文档到customer索引中, ‘external’类型, ID为1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除索引"><span class="nav-number">2.6.</span> <span class="nav-text">删除索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不指定id可以用POST请求创建一个新的文档-id会自动生成"><span class="nav-number">2.7.</span> <span class="nav-text">不指定id可以用POST请求创建一个新的文档,id会自动生成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更新文档"><span class="nav-number">2.8.</span> <span class="nav-text">更新文档</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除文档"><span class="nav-number">2.9.</span> <span class="nav-text">删除文档</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#批量操作"><span class="nav-number">2.10.</span> <span class="nav-text">批量操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据探索部分"><span class="nav-number">3.</span> <span class="nav-text">数据探索部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#返回的数据主要有以下几部分"><span class="nav-number">3.1.</span> <span class="nav-text">返回的数据主要有以下几部分:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DSL-Domain-Specific-Language-领域特定语言"><span class="nav-number">3.2.</span> <span class="nav-text">DSL(Domain-Specific Language, 领域特定语言)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#bool查询"><span class="nav-number">3.2.1.</span> <span class="nav-text">bool查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#过滤查询"><span class="nav-number">3.2.2.</span> <span class="nav-text">过滤查询</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zonzie</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+        
+<span class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      总访问量:&nbsp;
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</span>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Rji1lKrSTpNODa6AqPDnMqIV-gzGzoHsz", "DVufT1L5TN6qD7qijs4BehQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
