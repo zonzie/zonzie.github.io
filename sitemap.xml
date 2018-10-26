@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://zonzie.gitee.io/tags/index.html</loc>
+    <loc>https://zonzie.gitee.io/notes/index.html</loc>
     
-    <lastmod>2018-10-22T10:38:38.758Z</lastmod>
+    <lastmod>2018-10-26T09:32:32.960Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/notes/index.html</loc>
+    <loc>https://zonzie.gitee.io/tags/index.html</loc>
     
     <lastmod>2018-10-22T10:38:38.758Z</lastmod>
     
@@ -23,7 +23,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/about/index.html</loc>
+    <loc>https://zonzie.gitee.io/archives/index.html</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
@@ -37,7 +37,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/archives/index.html</loc>
+    <loc>https://zonzie.gitee.io/about/index.html</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
@@ -163,6 +163,13 @@
   </url>
   
   <url>
+    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    
+    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://zonzie.gitee.io/2018/04/24/centos7-64%E5%9C%A8vmWare%E4%B8%AD%E7%9A%84%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
@@ -177,7 +184,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://zonzie.gitee.io/2018/09/17/cache-problem/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
     
@@ -185,13 +192,6 @@
   
   <url>
     <loc>https://zonzie.gitee.io/2018/08/20/builder-pattern/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://zonzie.gitee.io/2018/09/17/cache-problem/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
     
