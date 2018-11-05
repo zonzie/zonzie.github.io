@@ -130,3 +130,26 @@ date: 2017-12-24 17:56:00
 		`git push origin :newBranch`
 	- 也可以直接删除远程分支
 		`git push origin --delete newBranch`
+
+##### 其他
+- 修改commit: `git commit --amend`, 如果要修改已push到远端的commit, 只能强制推送`git push --force one_branch`
+- 合并commit记录: 
+```shell
+git reset --soft "HEAD~n"
+# -n means ~1, ~2 ...
+git commit --amend
+```
+- 快速解决冲突
+```shell
+# 全部使用别人的
+git pull -X theirs
+git checkout --theirs path/to/file
+# 使用自己的
+git pull -X ours
+```
+- 批量删除tag
+```shell
+git tag -d TAG1 TAG2 TAG3
+# delete remove tag
+git push REMOTE --delete TAG1 TAG2 TAG3
+```
