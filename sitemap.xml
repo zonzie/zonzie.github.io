@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://zonzie.gitee.io/notes/index.html</loc>
+    <loc>https://zonzie.gitee.io/2017/12/24/git/</loc>
     
-    <lastmod>2018-10-26T09:32:32.960Z</lastmod>
+    <lastmod>2018-11-05T13:10:00.552Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/tags/index.html</loc>
+    <loc>https://zonzie.gitee.io/notes/index.html</loc>
     
-    <lastmod>2018-10-22T10:38:38.758Z</lastmod>
+    <lastmod>2018-10-26T09:32:32.960Z</lastmod>
     
   </url>
   
@@ -23,7 +23,14 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/archives/index.html</loc>
+    <loc>https://zonzie.gitee.io/tags/index.html</loc>
+    
+    <lastmod>2018-10-22T10:38:38.758Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/2018/06/03/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
@@ -37,13 +44,6 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/about/index.html</loc>
-    
-    <lastmod>2018-10-22T10:38:38.757Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://zonzie.gitee.io/2018/06/06/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
@@ -51,21 +51,28 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/06/03/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</loc>
+    <loc>https://zonzie.gitee.io/about/index.html</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/06/03/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <loc>https://zonzie.gitee.io/archives/index.html</loc>
+    
+    <lastmod>2018-10-22T10:38:38.757Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/2018/08/13/redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</loc>
     
     <lastmod>2018-10-22T10:38:38.756Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/08/01/rabbitMq%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</loc>
+    <loc>https://zonzie.gitee.io/2018/06/03/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2018-10-22T10:38:38.756Z</lastmod>
     
@@ -79,7 +86,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/08/13/redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</loc>
+    <loc>https://zonzie.gitee.io/2018/08/01/rabbitMq%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</loc>
     
     <lastmod>2018-10-22T10:38:38.756Z</lastmod>
     
@@ -107,14 +114,14 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/04/22/logback%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E7%AD%96%E7%95%A5/</loc>
+    <loc>https://zonzie.gitee.io/2018/04/18/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</loc>
     
     <lastmod>2018-10-22T10:38:38.754Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/04/18/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</loc>
+    <loc>https://zonzie.gitee.io/2018/04/22/logback%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E7%AD%96%E7%95%A5/</loc>
     
     <lastmod>2018-10-22T10:38:38.754Z</lastmod>
     
@@ -135,13 +142,6 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2017/12/24/git/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.752Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://zonzie.gitee.io/2018/09/18/elasticSearch-operation-note/</loc>
     
     <lastmod>2018-10-22T10:38:38.752Z</lastmod>
@@ -156,14 +156,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/08/09/Lua%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://zonzie.gitee.io/2018/08/20/builder-pattern/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
     
@@ -177,13 +170,6 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/09/06/consistent-hash/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://zonzie.gitee.io/2018/09/17/cache-problem/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
@@ -191,7 +177,21 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/08/20/builder-pattern/</loc>
+    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    
+    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/2018/09/06/consistent-hash/</loc>
+    
+    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/2018/08/09/Lua%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
     

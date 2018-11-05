@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="zonzie&#39;s notes">
 <meta property="og:description" content="有关git的入门配置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-22T10:38:38.752Z">
+<meta property="og:updated_time" content="2018-11-05T13:10:00.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git使用方法">
 <meta name="twitter:description" content="有关git的入门配置">
@@ -550,6 +550,18 @@
 </ul>
 </li>
 </ul>
+<h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><ul>
+<li>修改commit: <code>git commit --amend</code>, 如果要修改已push到远端的commit, 只能强制推送<code>git push --force one_branch</code></li>
+<li><p>合并commit记录: </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft "HEAD~n"</span><br><span class="line"><span class="meta">#</span> -n means ~1, ~2 ...</span><br><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>快速解决冲突</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 全部使用别人的</span><br><span class="line">git pull -X theirs</span><br><span class="line">git checkout --theirs path/to/file</span><br><span class="line"><span class="meta">#</span> 使用自己的</span><br><span class="line">git pull -X ours</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>批量删除tag</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git tag -d TAG1 TAG2 TAG3</span><br><span class="line"><span class="meta">#</span> delete remove tag</span><br><span class="line">git push REMOTE --delete TAG1 TAG2 TAG3</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
       
     </div>
@@ -752,7 +764,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始配置"><span class="nav-number">2.</span> <span class="nav-text">初始配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用命令"><span class="nav-number">3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#密钥管理"><span class="nav-number">4.</span> <span class="nav-text">密钥管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推送到github"><span class="nav-number">5.</span> <span class="nav-text">推送到github</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#克隆"><span class="nav-number">6.</span> <span class="nav-text">克隆</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分支管理"><span class="nav-number">7.</span> <span class="nav-text">分支管理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始配置"><span class="nav-number">2.</span> <span class="nav-text">初始配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用命令"><span class="nav-number">3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#密钥管理"><span class="nav-number">4.</span> <span class="nav-text">密钥管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推送到github"><span class="nav-number">5.</span> <span class="nav-text">推送到github</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#克隆"><span class="nav-number">6.</span> <span class="nav-text">克隆</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分支管理"><span class="nav-number">7.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他"><span class="nav-number">8.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>
