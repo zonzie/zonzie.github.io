@@ -1,5 +1,5 @@
 ---
-title: command_pattern
+title: 命令模式
 date: 2018-11-19 14:50:55
 tags: 
     - design pattern
