@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://zonzie.gitee.io/2017/12/24/git/</loc>
+    <loc>https://zonzie.gitee.io/notes/index.html</loc>
     
-    <lastmod>2018-11-05T13:10:00.552Z</lastmod>
+    <lastmod>2018-11-19T08:00:04.686Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/notes/index.html</loc>
+    <loc>https://zonzie.gitee.io/2018/11/19/command-pattern/</loc>
     
-    <lastmod>2018-10-26T09:32:32.960Z</lastmod>
+    <lastmod>2018-11-19T08:00:01.528Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/2017/12/24/git/</loc>
+    
+    <lastmod>2018-11-05T13:10:00.552Z</lastmod>
     
   </url>
   
@@ -37,13 +44,6 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/01/19/%E7%BB%99%E6%9C%AC%E7%AB%99%E9%85%8D%E7%BD%AEhttps/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.757Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://zonzie.gitee.io/2018/06/06/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
@@ -51,7 +51,7 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/about/index.html</loc>
+    <loc>https://zonzie.gitee.io/2018/01/19/%E7%BB%99%E6%9C%AC%E7%AB%99%E9%85%8D%E7%BD%AEhttps/</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
@@ -59,6 +59,13 @@
   
   <url>
     <loc>https://zonzie.gitee.io/archives/index.html</loc>
+    
+    <lastmod>2018-10-22T10:38:38.757Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://zonzie.gitee.io/about/index.html</loc>
     
     <lastmod>2018-10-22T10:38:38.757Z</lastmod>
     
@@ -114,14 +121,14 @@
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/04/18/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</loc>
+    <loc>https://zonzie.gitee.io/2018/04/22/logback%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E7%AD%96%E7%95%A5/</loc>
     
     <lastmod>2018-10-22T10:38:38.754Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://zonzie.gitee.io/2018/04/22/logback%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E7%AD%96%E7%95%A5/</loc>
+    <loc>https://zonzie.gitee.io/2018/04/18/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</loc>
     
     <lastmod>2018-10-22T10:38:38.754Z</lastmod>
     
@@ -163,6 +170,13 @@
   </url>
   
   <url>
+    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    
+    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://zonzie.gitee.io/2018/04/24/centos7-64%E5%9C%A8vmWare%E4%B8%AD%E7%9A%84%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
@@ -171,13 +185,6 @@
   
   <url>
     <loc>https://zonzie.gitee.io/2018/09/17/cache-problem/</loc>
-    
-    <lastmod>2018-10-22T10:38:38.749Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://zonzie.gitee.io/2018/04/16/docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
     
     <lastmod>2018-10-22T10:38:38.749Z</lastmod>
     

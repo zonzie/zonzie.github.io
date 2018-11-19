@@ -553,13 +553,13 @@
 <h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><ul>
 <li>修改commit: <code>git commit --amend</code>, 如果要修改已push到远端的commit, 只能强制推送<code>git push --force one_branch</code></li>
 <li><p>合并commit记录: </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft "HEAD~n"</span><br><span class="line"><span class="meta">#</span> -n means ~1, ~2 ...</span><br><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft "HEAD~n"</span><br><span class="line"><span class="meta">#</span><span class="bash"> -n means ~1, ~2 ...</span></span><br><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>快速解决冲突</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 全部使用别人的</span><br><span class="line">git pull -X theirs</span><br><span class="line">git checkout --theirs path/to/file</span><br><span class="line"><span class="meta">#</span> 使用自己的</span><br><span class="line">git pull -X ours</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 全部使用别人的</span></span><br><span class="line">git pull -X theirs</span><br><span class="line">git checkout --theirs path/to/file</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用自己的</span></span><br><span class="line">git pull -X ours</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>批量删除tag</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git tag -d TAG1 TAG2 TAG3</span><br><span class="line"><span class="meta">#</span> delete remove tag</span><br><span class="line">git push REMOTE --delete TAG1 TAG2 TAG3</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git tag -d TAG1 TAG2 TAG3</span><br><span class="line"><span class="meta">#</span><span class="bash"> delete remove tag</span></span><br><span class="line">git push REMOTE --delete TAG1 TAG2 TAG3</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 
@@ -686,7 +686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
