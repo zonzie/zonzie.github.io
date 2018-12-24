@@ -1,11 +1,11 @@
 ---
-title: spring cloud笔记-springCloud和eureka简介
+title: spring cloud笔记(一)-springCloud和eureka简介
 date: 2018-12-17 11:06:27
 tags: 
-    - spring_cloud
+    - spring cloud
     - eureka
-categories: spring_cloud
-description: the basic tutorial about spring cloud, 
+categories: spring cloud
+description: a basic tutorial about spring cloud, this one is about spring cloud eureka
 ---
 
 ### 微服务架构基础
