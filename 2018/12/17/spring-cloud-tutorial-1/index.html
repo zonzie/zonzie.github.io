@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="spring cloud,eureka," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="zonzie's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="a basic tutorial about spring cloud, this one is about spring cloud eureka">
+<meta name="keywords" content="spring cloud,eureka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring cloud笔记(一)-springCloud和eureka简介">
+<meta property="og:url" content="https://zonzie.gitee.io/2018/12/17/spring-cloud-tutorial-1/index.html">
+<meta property="og:site_name" content="zonzie&#39;s notes">
+<meta property="og:description" content="a basic tutorial about spring cloud, this one is about spring cloud eureka">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/microservice_construct.jpg">
+<meta property="og:image" content="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/spring_cloud_arch.png">
+<meta property="og:image" content="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/eureka_self_preservation.png">
+<meta property="og:updated_time" content="2018-12-24T09:52:57.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring cloud笔记(一)-springCloud和eureka简介">
+<meta name="twitter:description" content="a basic tutorial about spring cloud, this one is about spring cloud eureka">
+<meta name="twitter:image" content="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/microservice_construct.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonzie.gitee.io/2018/12/17/spring-cloud-tutorial-1/"/>
+
+
+
+
+
+  <title>spring cloud笔记(一)-springCloud和eureka简介 | zonzie's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zonzie's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-notes">
+          <a href="/notes/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            札记
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zonzie.gitee.io/2018/12/17/spring-cloud-tutorial-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zonzie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zonzie's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring cloud笔记(一)-springCloud和eureka简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-17T11:06:27+08:00">
+                2018-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring-cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">spring cloud</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/17/spring-cloud-tutorial-1/" class="leancloud_visitors" data-flag-title="spring cloud笔记(一)-springCloud和eureka简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  a basic tutorial about spring cloud, this one is about spring cloud eureka
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微服务架构基础"><a href="#微服务架构基础" class="headerlink" title="微服务架构基础"></a>微服务架构基础</h3><ul>
+<li>理论基础: <a href="http://www.melconway.com/Home/Committees_Paper.html" target="_blank" rel="noopener"><strong>康威定律</strong></a></li>
+<li>起源: 来自于martin Fowler的一篇<a href="https://www.martinfowler.com/articles/microservices.html" target="_blank" rel="noopener">博文</a>: <a href="https://www.cnblogs.com/liuning8023/p/4493156.html" target="_blank" rel="noopener">这是翻译</a></li>
+<li>基本概念: 一种系统架构上的设计风格, 主旨是将原本独立的系统拆分成多个小的服务,这些服务各自在独立的进程中运行, 服务之间基于统一的协议进行通信协作, 被拆分的每一个小型服务都围绕着系统中的某一项或者一些耦合程度很高的业务功能进行构建, 每项服务都维护着自身的业务开发, 数据存储等, 不同的服务可以使用不同的语言来编写</li>
+<li><strong>单体系统的问题</strong>:<ul>
+<li><strong>复杂性</strong>: 随着项目需求的不断增加, 单体应用会越来越臃肿, 可维护性, 灵活性越来越低, 维护成本越来越高, 模块越来越多, 模块的边界模糊, 依赖关系混乱不清, 修复一个bug可能会引入新的bug</li>
+<li><strong>技术债务</strong>: 开发时间紧张, 需求的变更, 人员变更等, 会导致逐渐形成技术债务,并且越积越多. “not broken, don’t fix”, 但是有技术债务是正常的, 就像金融债务, 只要偿还债务的速度大于债务的增长速度, 就是良性债务</li>
+<li><strong>部署风险</strong>: 随着项目越来越大, 每一次部署风险也会越来越大, 因为大的项目涉及到的功能也多, 每次上线都会有大量的功能变更和缺陷修复, 同样会加大出错的概率, 参见<a href="https://baike.baidu.com/item/%E5%A2%A8%E8%8F%B2%E5%AE%9A%E5%BE%8B/746284?fr=aladdin" target="_blank" rel="noopener">墨菲定律</a></li>
+<li><strong>可靠性差</strong></li>
+<li><strong>扩展能力有限</strong></li>
+</ul>
+</li>
+<li><strong>微服务的优点</strong><ul>
+<li>基本解决了上述单体应用的缺点</li>
+<li>开发简单</li>
+<li>技术栈灵活</li>
+<li>服务独立无依赖</li>
+<li>独立按需扩展</li>
+<li>可用性高</li>
+</ul>
+</li>
+<li><strong>微服务架构面临的问题</strong><ul>
+<li>多服务运维难度</li>
+<li>分布式系统的复杂性: 难免会遇到的问题, 网络延迟, 分布式事物, 数据一致性等</li>
+<li>接口的一致性, 系统部署依赖: 修改一个接口, 调用了这个接口的服务都需要做调整</li>
+<li>服务间通信成本</li>
+<li>系统集成测试</li>
+<li>重复工作</li>
+<li>性能监控</li>
+</ul>
+</li>
+<li><strong>微服务的设计原则</strong>:<ul>
+<li>单一职责原则: 一个单元只应该关注整个系统功能中单独的, 有界限的一部分</li>
+<li>服务自治原则: 每个微服务应该具备独立的业务能力, 依赖和运行环境. 服务是一个独立的业务单元, 应该和其他的服务高度解耦, 每个服务从开发, 测试, 构建, 部署都应该可以独立运行,而不依赖其他的服务</li>
+<li><strong>通信机制</strong>: spring cloud默认使用REST模式的http协议, dubbo, motan, dubbox基于netty实现自定义的通信协议</li>
+<li><strong>微服务的粒度</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="微服务开发框架–Spring-Cloud"><a href="#微服务开发框架–Spring-Cloud" class="headerlink" title="微服务开发框架–Spring Cloud"></a>微服务开发框架–Spring Cloud</h3><h4 id="常用组件"><a href="#常用组件" class="headerlink" title="常用组件"></a><a href="http://spring.io/projects/spring-cloud" target="_blank" rel="noopener">常用组件</a></h4><ul>
+<li>eureka</li>
+<li>ribbon</li>
+<li>hystrix</li>
+<li>feign</li>
+<li>zuul</li>
+<li>config</li>
+<li>slenth</li>
+<li><a href="https://springcloud.cc/" target="_blank" rel="noopener">…</a></li>
+</ul>
+<h4 id="服务发现组件–Eureka"><a href="#服务发现组件–Eureka" class="headerlink" title="服务发现组件–Eureka"></a>服务发现组件–<a href="https://github.com/Netflix/eureka" target="_blank" rel="noopener">Eureka</a></h4><ul>
+<li>eureka和zookeeper的对比<ul>
+<li>CAP原则(<a href="http://www.ruanyifeng.com/blog/2018/07/cap.html" target="_blank" rel="noopener">解释</a>), 分布式服务, 优先保证AP, 需要强一致性, 优先保证CP, <a href="http://dockone.io/article/78" target="_blank" rel="noopener">两者的对比</a></li>
+</ul>
+</li>
+<li>服务提供方, 消费方, 服务发现组件的关系<ol>
+<li>各个服务启动, 将自己的网络地址等信息注册到服务发现组件</li>
+<li>消费者从服务发现组件查询服务提供者的网络地址, 选择该地址调用服务提供方的接口</li>
+<li>微服务和服务发现组件使用一定的机制通信, 发现组件长时间无法与服务实例通信, 就注销该实例</li>
+<li>服务提供方的网络地址变更, 会重新注册到服务发现组件, 无需人工修改</li>
+</ol>
+</li>
+<li>常见的架构:<ul>
+<li><img src="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/microservice_construct.jpg" alt="微服务架构"></li>
+<li><img src="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/spring_cloud_arch.png" alt="eureka"></li>
+</ul>
+</li>
+<li>组件:<ul>
+<li>eurka server</li>
+<li>eureka client</li>
+</ul>
+</li>
+</ul>
+<h5 id="eureka服务搭建"><a href="#eureka服务搭建" class="headerlink" title="eureka服务搭建"></a>eureka服务搭建</h5><h6 id="eureka-server端"><a href="#eureka-server端" class="headerlink" title="eureka server端"></a>eureka server端</h6><ul>
+<li><p>需要的jar</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-eureka-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>需要的注解:</p>
+<ul>
+<li>在应用主类上添加注解: <code>@EnableEurekaServer</code></li>
+</ul>
+</li>
+<li><p>需要的最少配置:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    register-with-eureka:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">    fetch-registry:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问地址:</p>
+<ul>
+<li><a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></li>
+</ul>
+</li>
+<li>常用的配置属性<ul>
+<li><code>eureka.client.register-with-eureka</code>: 表示是否把自己注册到eureka</li>
+<li><code>eureka.client.fetch-registry</code>: 表示是否从注册表上拉取注册信息</li>
+<li><code>eureka.client.serviceUrl.defaultZone</code>: 表示与eureka server的交互地址,拉取服务列表,注册服务, 都需要这个地址, 多个地址使用<code>,</code>分隔</li>
+<li><code>spring.application.name</code>: 用户指定注册到Eureka Server上的应用名称</li>
+<li><code>eureka.instance.prefer-ip-address</code>: 表示注册自己的ip到Eureka Server</li>
+</ul>
+</li>
+</ul>
+<h5 id="eureka-client端"><a href="#eureka-client端" class="headerlink" title="eureka client端"></a>eureka client端</h5><ul>
+<li><p>需要的jar</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-eureka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>需要在主类添加的注解: <code>@EnableEurekaClient</code> 或者 <code>@EnableDiscoveryClient</code></p>
+</li>
+<li>配置:<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">client</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8082</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://localhost:1111/eureka/</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="更多的说明"><a href="#更多的说明" class="headerlink" title="更多的说明"></a>更多的说明</h5><ul>
+<li>服务续约:<ul>
+<li><code>eureka.instance.lease-renewal-interval-in-seconds</code>: 用于定义服务续约任务的调用间隔时间, 默认是30s</li>
+<li><code>lease-expiration-duration-in-seconds</code>: 用于定义服务失效的时间, 默认是90s</li>
+</ul>
+</li>
+<li>获取服务:<ul>
+<li><code>eureka.client.registry-fetch-interval-seconds</code>: 缓存清单的更新时间</li>
+</ul>
+</li>
+<li>服务下线:<ul>
+<li>正常的服务下线或者重启, 会发送REST请求到Eureka Server, 服务端接到请求, 会将服务状态置为下线, 并且把下线事件传播出去</li>
+</ul>
+</li>
+<li>注册中心<ul>
+<li>失效剔除:<ul>
+<li>如果服务没有正常下线, eureka server 不会收到下线的请求, Eureka Server会在启动时创建一个定时任务, 每隔一段时间把没有按时续约的服务剔除出去</li>
+</ul>
+</li>
+<li>自我保护:<ul>
+<li>服务在注册到Eureka Server后, 会维护一个心跳连接, 告诉eureka自己还活着, 如果心跳失败的比例在15分钟内低于85%, eureka server会将实例列表保护起来,不让实例过期, 这时如果实例出现问题, 调用方容易拿到实际不存在的实例,因此, 客户端需要有请求重试机制, 或者断路器</li>
+<li><img src="https://hexoblog-1255784309.cos.ap-beijing.myqcloud.com/eureka_self_preservation.png" alt="self_preservation"></li>
+<li>测试环境关闭自我保护机制:<ul>
+<li><code>eureka.server.enable-self-preservation</code>: 默认为true, 改成false</li>
+</ul>
+</li>
+<li>修改阈值: <code>eureka.server.renewal-percent-threshold</code>: 默认值为0.85</li>
+</ul>
+</li>
+<li>eureka Server 和 client之间通信也是通过REST模式的http协议, <a href="https://github.com/Netflix/eureka/wiki/Eureka-REST-operations" target="_blank" rel="noopener">这是文档</a></li>
+</ul>
+</li>
+<li><code>eureka.client</code>相关配置详细信息: <ul>
+<li><code>org.springframework.cloud.netflix.eureka.EurekaClientConfigBean</code></li>
+</ul>
+</li>
+<li><code>eureka.instance</code>相关配置详细信息: <ul>
+<li><code>org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean</code></li>
+</ul>
+</li>
+<li><code>eureka.server</code>相关配置详细信息: <ul>
+<li><code>org.springframework.cloud.netflix.eureka.server.EurekaServerConfigBean</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="全部的配置"><a href="#全部的配置" class="headerlink" title="全部的配置"></a>全部的配置</h3><ul>
+<li><p>eureka.instance</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#服务注册中心实例的主机名</span></span><br><span class="line"><span class="string">eureka.instance.hostname=localhost</span></span><br><span class="line"><span class="comment">#注册在Eureka服务中的应用组名</span></span><br><span class="line"><span class="string">eureka.instance.app-group-name=</span></span><br><span class="line"><span class="comment">#注册在的Eureka服务中的应用名称</span></span><br><span class="line"><span class="string">eureka.instance.appname=</span></span><br><span class="line"><span class="comment">#该实例注册到服务中心的唯一ID</span></span><br><span class="line"><span class="string">eureka.instance.instance-id=</span></span><br><span class="line"><span class="comment">#该实例的IP地址</span></span><br><span class="line"><span class="string">eureka.instance.ip-address=</span></span><br><span class="line"><span class="comment">#该实例，相较于hostname是否优先使用IP</span></span><br><span class="line"><span class="string">eureka.instance.prefer-ip-address=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#用于AWS平台自动扩展的与此实例关联的组名，</span></span><br><span class="line"><span class="string">eureka.instance.a-s-g-name=</span></span><br><span class="line"><span class="comment">#部署此实例的数据中心</span></span><br><span class="line"><span class="string">eureka.instance.data-center-info=</span></span><br><span class="line"><span class="comment">#默认的地址解析顺序</span></span><br><span class="line"><span class="string">eureka.instance.default-address-resolution-order=</span></span><br><span class="line"><span class="comment">#该实例的环境配置</span></span><br><span class="line"><span class="string">eureka.instance.environment=</span></span><br><span class="line"><span class="comment">#初始化该实例，注册到服务中心的初始状态</span></span><br><span class="line"><span class="string">eureka.instance.initial-status=up</span></span><br><span class="line"><span class="comment">#表明是否只要此实例注册到服务中心，立马就进行通信</span></span><br><span class="line"><span class="string">eureka.instance.instance-enabled-onit=false</span></span><br><span class="line"><span class="comment">#该服务实例的命名空间,用于查找属性</span></span><br><span class="line"><span class="string">eureka.instance.namespace=eureka</span></span><br><span class="line"><span class="comment">#该服务实例的子定义元数据，可以被服务中心接受到</span></span><br><span class="line"><span class="string">eureka.instance.metadata-map.test</span> <span class="string">=</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#服务中心删除此服务实例的等待时间(秒为单位),时间间隔为最后一次服务中心接受到的心跳时间</span></span><br><span class="line"><span class="string">eureka.instance.lease-expiration-duration-in-seconds=90</span></span><br><span class="line"><span class="comment">#该实例给服务中心发送心跳的间隔时间，用于表明该服务实例可用</span></span><br><span class="line"><span class="string">eureka.instance.lease-renewal-interval-in-seconds=30</span></span><br><span class="line"><span class="comment">#该实例，注册服务中心，默认打开的通信数量</span></span><br><span class="line"><span class="string">eureka.instance.registry.default-open-for-traffic-count=1</span></span><br><span class="line"><span class="comment">#每分钟续约次数</span></span><br><span class="line"><span class="string">eureka.instance.registry.expected-number-of-renews-per-min=1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#该实例健康检查url,绝对路径</span></span><br><span class="line"><span class="string">eureka.instance.health-check-url=</span></span><br><span class="line"><span class="comment">#该实例健康检查url,相对路径</span></span><br><span class="line"><span class="string">eureka.instance.health-check-url-path=/health</span></span><br><span class="line"><span class="comment">#该实例的主页url,绝对路径</span></span><br><span class="line"><span class="string">eureka.instance.home-page-url=</span></span><br><span class="line"><span class="comment">#该实例的主页url,相对路径</span></span><br><span class="line"><span class="string">eureka.instance.home-page-url-path=/</span></span><br><span class="line"><span class="comment">#该实例的安全健康检查url,绝对路径</span></span><br><span class="line"><span class="string">eureka.instance.secure-health-check-url=</span></span><br><span class="line"><span class="comment">#https通信端口</span></span><br><span class="line"><span class="string">eureka.instance.secure-port=443</span></span><br><span class="line"><span class="comment">#https通信端口是否启用</span></span><br><span class="line"><span class="string">eureka.instance.secure-port-enabled=false</span></span><br><span class="line"><span class="comment">#http通信端口</span></span><br><span class="line"><span class="string">eureka.instance.non-secure-port=80</span></span><br><span class="line"><span class="comment">#http通信端口是否启用</span></span><br><span class="line"><span class="string">eureka.instance.non-secure-port-enabled=true</span></span><br><span class="line"><span class="comment">#该实例的安全虚拟主机名称(https)</span></span><br><span class="line"><span class="string">eureka.instance.secure-virtual-host-name=unknown</span></span><br><span class="line"><span class="comment">#该实例的虚拟主机名称(http)</span></span><br><span class="line"><span class="string">eureka.instance.virtual-host-name=unknown</span></span><br><span class="line"><span class="comment">#该实例的状态呈现url,绝对路径</span></span><br><span class="line"><span class="string">eureka.instance.status-page-url=</span></span><br><span class="line"><span class="comment">#该实例的状态呈现url,相对路径</span></span><br><span class="line"><span class="string">eureka.instance.status-page-url-path=/status</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>eureka.server</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################server 与 client 关联的配置#####################33</span></span><br><span class="line"><span class="comment">#服务端开启自我保护模式。无论什么情况，服务端都会保持一定数量的服务。避免client与server的网络问题，而出现大量的服务被清除。</span></span><br><span class="line"><span class="string">eureka.server.enable-self-preservation=true</span></span><br><span class="line"><span class="comment">#开启清除无效服务的定时任务，时间间隔。默认1分钟</span></span><br><span class="line"><span class="string">eureka.server.eviction-interval-timer-in-ms=</span> <span class="number">60000</span></span><br><span class="line"><span class="comment">#间隔多长时间，清除过期的delta数据</span></span><br><span class="line"><span class="string">eureka.server.delta-retention-timer-interval-in-ms=0</span></span><br><span class="line"><span class="comment">#过期数据，是否也提供给client</span></span><br><span class="line"><span class="string">eureka.server.disable-delta=false</span></span><br><span class="line"><span class="comment">#eureka服务端是否记录client的身份header</span></span><br><span class="line"><span class="string">eureka.server.log-identity-headers=true</span></span><br><span class="line"><span class="comment">#请求频率限制器</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-burst-size=10</span></span><br><span class="line"><span class="comment">#是否开启请求频率限制器</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-enabled=false</span></span><br><span class="line"><span class="comment">#请求频率的平均值</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-full-fetch-average-rate=100</span></span><br><span class="line"><span class="comment">#是否对标准的client进行频率请求限制。如果是false，则只对非标准client进行限制</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-throttle-standard-clients=false</span></span><br><span class="line"><span class="comment">#注册服务、拉去服务列表数据的请求频率的平均值</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-registry-fetch-average-rate=500</span></span><br><span class="line"><span class="comment">#设置信任的client list</span></span><br><span class="line"><span class="string">eureka.server.rate-limiter-privileged-clients=</span></span><br><span class="line"><span class="comment">#在设置的时间范围类，期望与client续约的百分比。</span></span><br><span class="line"><span class="string">eureka.server.renewal-percent-threshold=0.85</span></span><br><span class="line"><span class="comment">#多长时间更新续约的阈值</span></span><br><span class="line"><span class="string">eureka.server.renewal-threshold-update-interval-ms=0</span></span><br><span class="line"><span class="comment">#对于缓存的注册数据，多长时间过期</span></span><br><span class="line"><span class="string">eureka.server.response-cache-auto-expiration-in-seconds=180</span></span><br><span class="line"><span class="comment">#多长时间更新一次缓存中的服务注册数据</span></span><br><span class="line"><span class="string">eureka.server.response-cache-update-interval-ms=0</span></span><br><span class="line"><span class="comment">#缓存增量数据的时间，以便在检索的时候不丢失信息</span></span><br><span class="line"><span class="string">eureka.server.retention-time-in-m-s-in-delta-queue=0</span></span><br><span class="line"><span class="comment">#当时间戳不一致的时候，是否进行同步</span></span><br><span class="line"><span class="string">eureka.server.sync-when-timestamp-differs=true</span></span><br><span class="line"><span class="comment">#是否采用只读缓存策略，只读策略对于缓存的数据不会过期。</span></span><br><span class="line"><span class="string">eureka.server.use-read-only-response-cache=true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################server 自定义实现的配置#####################33</span></span><br><span class="line"><span class="comment">#json的转换的实现类名</span></span><br><span class="line"><span class="string">eureka.server.json-codec-name=</span></span><br><span class="line"><span class="comment">#PropertyResolver</span></span><br><span class="line"><span class="string">eureka.server.property-resolver=</span></span><br><span class="line"><span class="comment">#eureka server xml的编解码实现名称</span></span><br><span class="line"><span class="string">eureka.server.xml-codec-name=</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################server node 与 node 之间关联的配置#####################33</span></span><br><span class="line"><span class="comment">#发送复制数据是否在request中，总是压缩</span></span><br><span class="line"><span class="string">eureka.server.enable-replicated-request-compression=false</span></span><br><span class="line"><span class="comment">#指示群集节点之间的复制是否应批处理以提高网络效率。</span></span><br><span class="line"><span class="string">eureka.server.batch-replication=false</span></span><br><span class="line"><span class="comment">#允许备份到备份池的最大复制事件数量。而这个备份池负责除状态更新的其他事件。可以根据内存大小，超时和复制流量，来设置此值得大小</span></span><br><span class="line"><span class="string">eureka.server.max-elements-in-peer-replication-pool=10000</span></span><br><span class="line"><span class="comment">#允许备份到状态备份池的最大复制事件数量</span></span><br><span class="line"><span class="string">eureka.server.max-elements-in-status-replication-pool=10000</span></span><br><span class="line"><span class="comment">#多个服务中心相互同步信息线程的最大空闲时间</span></span><br><span class="line"><span class="string">eureka.server.max-idle-thread-age-in-minutes-for-peer-replication=15</span></span><br><span class="line"><span class="comment">#状态同步线程的最大空闲时间</span></span><br><span class="line"><span class="string">eureka.server.max-idle-thread-in-minutes-age-for-status-replication=15</span></span><br><span class="line"><span class="comment">#服务注册中心各个instance相互复制数据的最大线程数量</span></span><br><span class="line"><span class="string">eureka.server.max-threads-for-peer-replication=20</span></span><br><span class="line"><span class="comment">#服务注册中心各个instance相互复制状态数据的最大线程数量</span></span><br><span class="line"><span class="string">eureka.server.max-threads-for-status-replication=1</span></span><br><span class="line"><span class="comment">#instance之间复制数据的通信时长</span></span><br><span class="line"><span class="string">eureka.server.max-time-for-replication=30000</span></span><br><span class="line"><span class="comment">#正常的对等服务instance最小数量。-1表示服务中心为单节点。</span></span><br><span class="line"><span class="string">eureka.server.min-available-instances-for-peer-replication=-1</span></span><br><span class="line"><span class="comment">#instance之间相互复制开启的最小线程数量</span></span><br><span class="line"><span class="string">eureka.server.min-threads-for-peer-replication=5</span></span><br><span class="line"><span class="comment">#instance之间用于状态复制，开启的最小线程数量</span></span><br><span class="line"><span class="string">eureka.server.min-threads-for-status-replication=1</span></span><br><span class="line"><span class="comment">#instance之间复制数据时可以重试的次数</span></span><br><span class="line"><span class="string">eureka.server.number-of-replication-retries=5</span></span><br><span class="line"><span class="comment">#eureka节点间间隔多长时间更新一次数据。默认10分钟。</span></span><br><span class="line"><span class="string">eureka.server.peer-eureka-nodes-update-interval-ms=600000</span></span><br><span class="line"><span class="comment">#eureka服务状态的相互更新的时间间隔。</span></span><br><span class="line"><span class="string">eureka.server.peer-eureka-status-refresh-time-interval-ms=0</span></span><br><span class="line"><span class="comment">#eureka对等节点间连接超时时间</span></span><br><span class="line"><span class="string">eureka.server.peer-node-connect-timeout-ms=200</span></span><br><span class="line"><span class="comment">#eureka对等节点连接后的空闲时间</span></span><br><span class="line"><span class="string">eureka.server.peer-node-connection-idle-timeout-seconds=30</span></span><br><span class="line"><span class="comment">#节点间的读数据连接超时时间</span></span><br><span class="line"><span class="string">eureka.server.peer-node-read-timeout-ms=200</span></span><br><span class="line"><span class="comment">#eureka server 节点间连接的总共最大数量</span></span><br><span class="line"><span class="string">eureka.server.peer-node-total-connections=1000</span></span><br><span class="line"><span class="comment">#eureka server 节点间连接的单机最大数量</span></span><br><span class="line"><span class="string">eureka.server.peer-node-total-connections-per-host=10</span></span><br><span class="line"><span class="comment">#在服务节点启动时，eureka尝试获取注册信息的次数</span></span><br><span class="line"><span class="string">eureka.server.registry-sync-retries=</span></span><br><span class="line"><span class="comment">#在服务节点启动时，eureka多次尝试获取注册信息的间隔时间</span></span><br><span class="line"><span class="string">eureka.server.registry-sync-retry-wait-ms=</span></span><br><span class="line"><span class="comment">#当eureka server启动的时候，不能从对等节点获取instance注册信息的情况，应等待多长时间。</span></span><br><span class="line"><span class="string">eureka.server.wait-time-in-ms-when-sync-empty=0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################server 与 remote 关联的配置#####################33</span></span><br><span class="line"><span class="comment">#过期数据，是否也提供给远程region</span></span><br><span class="line"><span class="string">eureka.server.disable-delta-for-remote-regions=false</span></span><br><span class="line"><span class="comment">#回退到远程区域中的应用程序的旧行为 (如果已配置) 如果本地区域中没有该应用程序的实例, 则将被禁用。</span></span><br><span class="line"><span class="string">eureka.server.disable-transparent-fallback-to-other-region=false</span></span><br><span class="line"><span class="comment">#指示在服务器支持的情况下, 是否必须为远程区域压缩从尤里卡服务器获取的内容。</span></span><br><span class="line"><span class="string">eureka.server.g-zip-content-from-remote-region=true</span></span><br><span class="line"><span class="comment">#连接eureka remote note的连接超时时间</span></span><br><span class="line"><span class="string">eureka.server.remote-region-connect-timeout-ms=1000</span></span><br><span class="line"><span class="comment">#remote region 应用白名单</span></span><br><span class="line"><span class="string">eureka.server.remote-region-app-whitelist.</span></span><br><span class="line"><span class="comment">#连接eureka remote note的连接空闲时间</span></span><br><span class="line"><span class="string">eureka.server.remote-region-connection-idle-timeout-seconds=30</span></span><br><span class="line"><span class="comment">#执行remote region 获取注册信息的请求线程池大小</span></span><br><span class="line"><span class="string">eureka.server.remote-region-fetch-thread-pool-size=20</span></span><br><span class="line"><span class="comment">#remote region 从对等eureka加点读取数据的超时时间</span></span><br><span class="line"><span class="string">eureka.server.remote-region-read-timeout-ms=1000</span></span><br><span class="line"><span class="comment">#从remote region 获取注册信息的时间间隔</span></span><br><span class="line"><span class="string">eureka.server.remote-region-registry-fetch-interval=30</span></span><br><span class="line"><span class="comment">#remote region 连接eureka节点的总连接数量</span></span><br><span class="line"><span class="string">eureka.server.remote-region-total-connections=1000</span></span><br><span class="line"><span class="comment">#remote region 连接eureka节点的单机连接数量</span></span><br><span class="line"><span class="string">eureka.server.remote-region-total-connections-per-host=50</span></span><br><span class="line"><span class="comment">#remote region抓取注册信息的存储文件，而这个可靠的存储文件需要全限定名来指定</span></span><br><span class="line"><span class="string">eureka.server.remote-region-trust-store=</span></span><br><span class="line"><span class="comment">#remote region 储存的文件的密码</span></span><br><span class="line"><span class="string">eureka.server.remote-region-trust-store-password=</span></span><br><span class="line"><span class="comment">#remote region url.多个逗号隔开</span></span><br><span class="line"><span class="string">eureka.server.remote-region-urls=</span></span><br><span class="line"><span class="comment">#remote region url.多个逗号隔开</span></span><br><span class="line"><span class="string">eureka.server.remote-region-urls-with-name.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################server 与 ASG/AWS/EIP/route52 之间关联的配置#####################33</span></span><br><span class="line"><span class="comment">#缓存ASG信息的过期时间。</span></span><br><span class="line"><span class="string">eureka.server.a-s-g-cache-expiry-timeout-ms=0</span></span><br><span class="line"><span class="comment">#查询ASG信息的超时时间</span></span><br><span class="line"><span class="string">eureka.server.a-s-g-query-timeout-ms=300</span></span><br><span class="line"><span class="comment">#服务更新ASG信息的频率</span></span><br><span class="line"><span class="string">eureka.server.a-s-g-update-interval-ms=0</span></span><br><span class="line"><span class="comment">#AWS访问ID</span></span><br><span class="line"><span class="string">eureka.server.a-w-s-access-id=</span></span><br><span class="line"><span class="comment">#AWS安全密钥</span></span><br><span class="line"><span class="string">eureka.server.a-w-s-secret-key=</span></span><br><span class="line"><span class="comment">#AWS绑定策略</span></span><br><span class="line"><span class="string">eureka.server.binding-strategy=eip</span></span><br><span class="line"><span class="comment">#用于从第三方AWS 帐户描述自动扩展分组的角色的名称。</span></span><br><span class="line"><span class="string">eureka.server.list-auto-scaling-groups-role-name=</span></span><br><span class="line"><span class="comment">#是否应该建立连接引导</span></span><br><span class="line"><span class="string">eureka.server.prime-aws-replica-connections=true</span></span><br><span class="line"><span class="comment">#服务端尝试绑定候选EIP的次数</span></span><br><span class="line"><span class="string">eureka.server.e-i-p-bind-rebind-retries=3</span></span><br><span class="line"><span class="comment">#服务端绑定EIP的时间间隔.如果绑定就检查;如果绑定失效就重新绑定。当且仅当已经绑定的情况</span></span><br><span class="line"><span class="string">eureka.server.e-i-p-binding-retry-interval-ms=10</span></span><br><span class="line"><span class="comment">#服务端绑定EIP的时间间隔.当且仅当服务为绑定的情况</span></span><br><span class="line"><span class="string">eureka.server.e-i-p-binding-retry-interval-ms-when-unbound=</span></span><br><span class="line"><span class="comment">#服务端尝试绑定route53的次数</span></span><br><span class="line"><span class="string">eureka.server.route53-bind-rebind-retries=3</span></span><br><span class="line"><span class="comment">#服务端间隔多长时间尝试绑定route53</span></span><br><span class="line"><span class="string">eureka.server.route53-binding-retry-interval-ms=30</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="string">eureka.server.route53-domain-t-t-l=10</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>eureka.client</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#该客户端是否可用</span></span><br><span class="line"><span class="string">eureka.client.enabled=true</span></span><br><span class="line"><span class="comment">#实例是否在eureka服务器上注册自己的信息以供其他服务发现，默认为true</span></span><br><span class="line"><span class="string">eureka.client.register-with-eureka=false</span></span><br><span class="line"><span class="comment">#此客户端是否获取eureka服务器注册表上的注册信息，默认为true</span></span><br><span class="line"><span class="string">eureka.client.fetch-registry=false</span></span><br><span class="line"><span class="comment">#是否过滤掉，非UP的实例。默认为true</span></span><br><span class="line"><span class="string">eureka.client.filter-only-up-instances=true</span></span><br><span class="line"><span class="comment">#与Eureka注册服务中心的通信zone和url地址</span></span><br><span class="line"><span class="string">eureka.client.serviceUrl.defaultZone=http://$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#client连接Eureka服务端后的空闲等待时间，默认为30 秒</span></span><br><span class="line"><span class="string">eureka.client.eureka-connection-idle-timeout-seconds=30</span></span><br><span class="line"><span class="comment">#client连接eureka服务端的连接超时时间，默认为5秒</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-connect-timeout-seconds=5</span></span><br><span class="line"><span class="comment">#client对服务端的读超时时长</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-read-timeout-seconds=8</span></span><br><span class="line"><span class="comment">#client连接all eureka服务端的总连接数，默认200</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-total-connections=200</span></span><br><span class="line"><span class="comment">#client连接eureka服务端的单机连接数量，默认50</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-total-connections-per-host=50</span></span><br><span class="line"><span class="comment">#执行程序指数回退刷新的相关属性，是重试延迟的最大倍数值，默认为10</span></span><br><span class="line"><span class="string">eureka.client.cache-refresh-executor-exponential-back-off-bound=10</span></span><br><span class="line"><span class="comment">#执行程序缓存刷新线程池的大小，默认为5</span></span><br><span class="line"><span class="string">eureka.client.cache-refresh-executor-thread-pool-size=2</span></span><br><span class="line"><span class="comment">#心跳执行程序回退相关的属性，是重试延迟的最大倍数值，默认为10</span></span><br><span class="line"><span class="string">eureka.client.heartbeat-executor-exponential-back-off-bound=10</span></span><br><span class="line"><span class="comment">#心跳执行程序线程池的大小,默认为5</span></span><br><span class="line"><span class="string">eureka.client.heartbeat-executor-thread-pool-size=5</span></span><br><span class="line"><span class="comment"># 询问Eureka服务url信息变化的频率（s），默认为300秒</span></span><br><span class="line"><span class="string">eureka.client.eureka-service-url-poll-interval-seconds=300</span></span><br><span class="line"><span class="comment">#最初复制实例信息到eureka服务器所需的时间（s），默认为40秒</span></span><br><span class="line"><span class="string">eureka.client.initial-instance-info-replication-interval-seconds=40</span></span><br><span class="line"><span class="comment">#间隔多长时间再次复制实例信息到eureka服务器，默认为30秒</span></span><br><span class="line"><span class="string">eureka.client.instance-info-replication-interval-seconds=30</span></span><br><span class="line"><span class="comment">#从eureka服务器注册表中获取注册信息的时间间隔（s），默认为30秒</span></span><br><span class="line"><span class="string">eureka.client.registry-fetch-interval-seconds=30</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取实例所在的地区。默认为us-east-1</span></span><br><span class="line"><span class="string">eureka.client.region=us-east-1</span></span><br><span class="line"><span class="comment">#实例是否使用同一zone里的eureka服务器，默认为true，理想状态下，eureka客户端与服务端是在同一zone下</span></span><br><span class="line"><span class="string">eureka.client.prefer-same-zone-eureka=true</span></span><br><span class="line"><span class="comment"># 获取实例所在的地区下可用性的区域列表，用逗号隔开。（AWS）</span></span><br><span class="line"><span class="string">eureka.client.availability-zones.china=defaultZone,defaultZone1,defaultZone2</span></span><br><span class="line"><span class="comment">#eureka服务注册表信息里的以逗号隔开的地区名单，如果不这样返回这些地区名单，则客户端启动将会出错。默认为null</span></span><br><span class="line"><span class="string">eureka.client.fetch-remote-regions-registry=</span></span><br><span class="line"><span class="comment">#服务器是否能够重定向客户端请求到备份服务器。 如果设置为false，服务器将直接处理请求，如果设置为true，它可能发送HTTP重定向到客户端。默认为false</span></span><br><span class="line"><span class="string">eureka.client.allow-redirects=false</span></span><br><span class="line"><span class="comment">#客户端数据接收</span></span><br><span class="line"><span class="string">eureka.client.client-data-accept=</span></span><br><span class="line"><span class="comment">#增量信息是否可以提供给客户端看，默认为false</span></span><br><span class="line"><span class="string">eureka.client.disable-delta=false</span></span><br><span class="line"><span class="comment">#eureka服务器序列化/反序列化的信息中获取“_”符号的的替换字符串。默认为“__“</span></span><br><span class="line"><span class="string">eureka.client.escape-char-replacement=__</span></span><br><span class="line"><span class="comment">#eureka服务器序列化/反序列化的信息中获取“$”符号的替换字符串。默认为“_-”</span></span><br><span class="line"><span class="string">eureka.client.dollar-replacement="_-"</span></span><br><span class="line"><span class="comment">#当服务端支持压缩的情况下，是否支持从服务端获取的信息进行压缩。默认为true</span></span><br><span class="line"><span class="string">eureka.client.g-zip-content=true</span></span><br><span class="line"><span class="comment">#是否记录eureka服务器和客户端之间在注册表的信息方面的差异，默认为false</span></span><br><span class="line"><span class="string">eureka.client.log-delta-diff=false</span></span><br><span class="line"><span class="comment"># 如果设置为true,客户端的状态更新将会点播更新到远程服务器上，默认为true</span></span><br><span class="line"><span class="string">eureka.client.on-demand-update-status-change=true</span></span><br><span class="line"><span class="comment">#此客户端只对一个单一的VIP注册表的信息感兴趣。默认为null</span></span><br><span class="line"><span class="string">eureka.client.registry-refresh-single-vip-address=</span></span><br><span class="line"><span class="comment">#client是否在初始化阶段强行注册到服务中心，默认为false</span></span><br><span class="line"><span class="string">eureka.client.should-enforce-registration-at-init=false</span></span><br><span class="line"><span class="comment">#client在shutdown的时候是否显示的注销服务从服务中心，默认为true</span></span><br><span class="line"><span class="string">eureka.client.should-unregister-on-shutdown=true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取eureka服务的代理主机，默认为null</span></span><br><span class="line"><span class="string">eureka.client.proxy-host=</span></span><br><span class="line"><span class="comment">#获取eureka服务的代理密码，默认为null</span></span><br><span class="line"><span class="string">eureka.client.proxy-password=</span></span><br><span class="line"><span class="comment"># 获取eureka服务的代理端口, 默认为null</span></span><br><span class="line"><span class="string">eureka.client.proxy-port=</span></span><br><span class="line"><span class="comment"># 获取eureka服务的代理用户名，默认为null</span></span><br><span class="line"><span class="string">eureka.client.proxy-user-name=</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#属性解释器</span></span><br><span class="line"><span class="string">eureka.client.property-resolver=</span></span><br><span class="line"><span class="comment">#获取实现了eureka客户端在第一次启动时读取注册表的信息作为回退选项的实现名称</span></span><br><span class="line"><span class="string">eureka.client.backup-registry-impl=</span></span><br><span class="line"><span class="comment">#这是一个短暂的×××的配置，如果最新的×××是稳定的，则可以去除，默认为null</span></span><br><span class="line"><span class="string">eureka.client.decoder-name=</span></span><br><span class="line"><span class="comment">#这是一个短暂的编码器的配置，如果最新的编码器是稳定的，则可以去除，默认为null</span></span><br><span class="line"><span class="string">eureka.client.encoder-name=</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#是否使用DNS机制去获取服务列表，然后进行通信。默认为false</span></span><br><span class="line"><span class="string">eureka.client.use-dns-for-fetching-service-urls=false</span></span><br><span class="line"><span class="comment">#获取要查询的DNS名称来获得eureka服务器，此配置只有在eureka服务器ip地址列表是在DNS中才会用到。默认为null</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-d-n-s-name=</span></span><br><span class="line"><span class="comment">#获取eureka服务器的端口，此配置只有在eureka服务器ip地址列表是在DNS中才会用到。默认为null</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-port=</span></span><br><span class="line"><span class="comment">#表示eureka注册中心的路径，如果配置为eureka，则为http://x.x.x.x:x/eureka/，在eureka的配置文件中加入此配置表示eureka作为客户端向注册中心注册，从而构成eureka集群。此配置只有在eureka服务器ip地址列表是在DNS中才会用到，默认为null</span></span><br><span class="line"><span class="string">eureka.client.eureka-server-u-r-l-context=</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h3><ul>
+<li>微服务: <a href="https://yq.aliyun.com/articles/2764" target="_blank" rel="noopener">https://yq.aliyun.com/articles/2764</a></li>
+<li>康威定律: <a href="https://yq.aliyun.com/articles/8611" target="_blank" rel="noopener">https://yq.aliyun.com/articles/8611</a></li>
+<li>eureka 文档: <a href="https://github.com/Netflix/eureka/wiki" target="_blank" rel="noopener">https://github.com/Netflix/eureka/wiki</a></li>
+<li>eureka rest api: <a href="https://segmentfault.com/a/1190000014750346" target="_blank" rel="noopener">https://segmentfault.com/a/1190000014750346</a></li>
+<li>spring cloud 文档: <a href="http://cloud.spring.io/spring-cloud-static/Finchley.SR2/single/spring-cloud.html" target="_blank" rel="noopener">http://cloud.spring.io/spring-cloud-static/Finchley.SR2/single/spring-cloud.html</a></li>
+<li>为什么不用zk做服务发现: <a href="http://dockone.io/article/78" target="_blank" rel="noopener">http://dockone.io/article/78</a></li>
+<li>netflix 开源项目: <a href="https://github.com/Netflix" target="_blank" rel="noopener">https://github.com/Netflix</a></li>
+</ul>
+<h3 id="相关的demo"><a href="#相关的demo" class="headerlink" title="相关的demo:"></a>相关的demo:</h3><ul>
+<li>demo: <a href="https://gitee.com/zonzie/spring-cloud-demo" target="_blank" rel="noopener">https://gitee.com/zonzie/spring-cloud-demo</a></li>
+<li>spring cloud 相关的例子: <a href="https://github.com/spring-cloud-samples/spring-cloud-contract-samples" target="_blank" rel="noopener">https://github.com/spring-cloud-samples/spring-cloud-contract-samples</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring-cloud/" rel="tag"><i class="fa fa-tag"></i> spring cloud</a>
+          
+            <a href="/tags/eureka/" rel="tag"><i class="fa fa-tag"></i> eureka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/19/command-pattern/" rel="next" title="命令模式">
+                <i class="fa fa-chevron-left"></i> 命令模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/24/spring-cloud-tutorial-2/" rel="prev" title="spring cloud笔记(二)-服务调用(Ribbon和Feign)">
+                spring cloud笔记(二)-服务调用(Ribbon和Feign) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avartar.jpg"
+                alt="zonzie" />
+            
+              <p class="site-author-name" itemprop="name">zonzie</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zonzie" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaobq13@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构基础"><span class="nav-number">1.</span> <span class="nav-text">微服务架构基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务开发框架–Spring-Cloud"><span class="nav-number">2.</span> <span class="nav-text">微服务开发框架–Spring Cloud</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用组件"><span class="nav-number">2.1.</span> <span class="nav-text">常用组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务发现组件–Eureka"><span class="nav-number">2.2.</span> <span class="nav-text">服务发现组件–Eureka</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#eureka服务搭建"><span class="nav-number">2.2.1.</span> <span class="nav-text">eureka服务搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#eureka-server端"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">eureka server端</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#eureka-client端"><span class="nav-number">2.2.2.</span> <span class="nav-text">eureka client端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更多的说明"><span class="nav-number">2.2.3.</span> <span class="nav-text">更多的说明</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全部的配置"><span class="nav-number">3.</span> <span class="nav-text">全部的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考内容"><span class="nav-number">4.</span> <span class="nav-text">参考内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关的demo"><span class="nav-number">5.</span> <span class="nav-text">相关的demo:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zonzie</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+        
+<span class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      总访问量:&nbsp;
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</span>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Rji1lKrSTpNODa6AqPDnMqIV-gzGzoHsz", "DVufT1L5TN6qD7qijs4BehQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

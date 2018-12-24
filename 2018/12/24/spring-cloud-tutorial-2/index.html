@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="spring cloud,ribbon,feign," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="zonzie's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="an introduction to ribbon and feign">
+<meta name="keywords" content="spring cloud,ribbon,feign">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring cloud笔记(二)-服务调用(Ribbon和Feign)">
+<meta property="og:url" content="https://zonzie.gitee.io/2018/12/24/spring-cloud-tutorial-2/index.html">
+<meta property="og:site_name" content="zonzie&#39;s notes">
+<meta property="og:description" content="an introduction to ribbon and feign">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-24T10:01:23.362Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring cloud笔记(二)-服务调用(Ribbon和Feign)">
+<meta name="twitter:description" content="an introduction to ribbon and feign">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonzie.gitee.io/2018/12/24/spring-cloud-tutorial-2/"/>
+
+
+
+
+
+  <title>spring cloud笔记(二)-服务调用(Ribbon和Feign) | zonzie's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zonzie's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-notes">
+          <a href="/notes/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            札记
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zonzie.gitee.io/2018/12/24/spring-cloud-tutorial-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zonzie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avartar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zonzie's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring cloud笔记(二)-服务调用(Ribbon和Feign)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-24T10:25:40+08:00">
+                2018-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring-cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">spring cloud</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/24/spring-cloud-tutorial-2/" class="leancloud_visitors" data-flag-title="spring cloud笔记(二)-服务调用(Ribbon和Feign)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  an introduction to ribbon and feign
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="添加actuator"><a href="#添加actuator" class="headerlink" title="添加actuator"></a>添加actuator</h2><p>actuator提供了很多的监控端点, 可以使用http:{ip}:{port}/{endpoint}的形式访问这些端点, 来了解应用程序的运行状况, <a href="https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#production-ready" target="_blank" rel="noopener">官方文档</a><br><br>需要的jar:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>actuator的常用的端点如下:</p>
+<table>
+<thead>
+<tr>
+<th>端点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>health</td>
+<td>显示应用程序的健康程度, 内容由HealthIndicator的实现类提供</td>
+</tr>
+<tr>
+<td>autoconfig</td>
+<td>显示自动配置的信息</td>
+</tr>
+<tr>
+<td>beans</td>
+<td>显示上下文中所有的spring bean</td>
+</tr>
+<tr>
+<td>configprops</td>
+<td>显示所有的@ConfigurationProperties的配置属性的列表, <code>endpoints.configprops.enabled=false</code>可以关闭这个端点</td>
+</tr>
+<tr>
+<td>dump</td>
+<td>显示线程活动的快照</td>
+</tr>
+<tr>
+<td>env</td>
+<td>显示应用程序的环境变量</td>
+</tr>
+<tr>
+<td>info</td>
+<td>显示应用程序的基本信息</td>
+</tr>
+<tr>
+<td>metrics</td>
+<td>显示应用的度量标准信息</td>
+</tr>
+<tr>
+<td>shutdown</td>
+<td>关闭应用程序(默认不启用, 需要设置<code>endpoints.shutdown.enabled=true</code>), POST请求</td>
+</tr>
+<tr>
+<td>trace</td>
+<td>显示跟踪信息(默认是最近100个HTTP请求)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>/metrics</code>: 返回当前应用的各类度量指标<ul>
+<li><code>processors</code>: 处理器数量</li>
+<li><code>uptime</code>: 运行时间</li>
+<li><code>systemload.average</code>: 系统平均负载</li>
+<li><code>mem.*</code>: 内存概要信息</li>
+<li><code>heap.*</code>: 堆内存的使用情况</li>
+<li><code>nonheap.*</code>: 非堆内存的使用情况</li>
+<li><code>threads.*</code>: 线程使用情况</li>
+<li><code>classes.*</code>: 应用加载和卸载的类统计</li>
+<li><code>gc.*</code>: 垃圾收集器的详细信息<ul>
+<li><code>gc.ps_scavenge.count</code>: 垃圾回收次数</li>
+<li><code>gc.ps_scavenge.time</code>: 垃圾回收消耗的时间</li>
+<li><code>gc.ps_marksweep.count</code>: 标记-清除算法的次数</li>
+<li><code>gc.ps_marksweep.time</code>:  标记-清除算法的消耗时间</li>
+</ul>
+</li>
+<li><code>httpsessions.*</code>: tomcat会话使用情况, 只有嵌入式的tomcat才会有</li>
+<li><code>gauge.*</code>: HTTP请求的性能指标</li>
+<li><code>counter.*</code>: HTTP请求的性能指标</li>
+</ul>
+</li>
+<li>自定义统计值<ol>
+<li>注入<code>o.s.b.actuate.metrics.CounterService</code>或者<code>o.s.b.actuate.GaugeService</code></li>
+<li>调用CounterService的increment或者decrement方法</li>
+</ol>
+</li>
+</ul>
+<h2 id="Ribbon-客户端侧负载均衡-文档"><a href="#Ribbon-客户端侧负载均衡-文档" class="headerlink" title="Ribbon 客户端侧负载均衡(文档)"></a><a href="https://github.com/Netflix/ribbon" target="_blank" rel="noopener">Ribbon 客户端侧负载均衡</a>(<a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-netflix/2.1.0.RC3/single/spring-cloud-netflix.html#spring-cloud-ribbon" target="_blank" rel="noopener">文档</a>)</h2><ul>
+<li>服务端的负载均衡: F5, nginx</li>
+<li>主要区别: 服务清单的维护位置</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用:"></a><strong>使用</strong>:</h3><ul>
+<li><p>依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-ribbon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为RestTemplate添加<code>@LoadBalanced</code>的注解, 就可使其具备负载均衡的能力</p>
+</li>
+<li>使用时, 将域名换成服务名就行了</li>
+</ul>
+<h3 id="ribbon的默认配置"><a href="#ribbon的默认配置" class="headerlink" title="ribbon的默认配置:"></a><strong>ribbon的默认配置</strong>:</h3><style>
+table th:first-of-type {
+    width: 110px;
+}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>Bean Type</th>
+<th>Bean Name</th>
+<th>Class Name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IClientConfig</td>
+<td>ribbonClientConfig</td>
+<td>DefaultClientConfigImpl</td>
+<td>ribbon的客户端配置</td>
+</tr>
+<tr>
+<td>IRule</td>
+<td>ribbonRule</td>
+<td>ZoneAvoidanceRule</td>
+<td>ribbon的负载均衡策略</td>
+</tr>
+<tr>
+<td>IPing</td>
+<td>ribbonPing</td>
+<td>DummyPing</td>
+<td>ribbon的实例检查策略</td>
+</tr>
+<tr>
+<td>ServerList<server></server></td>
+<td>ribbonServerList</td>
+<td>ConfigurationBasedServerList</td>
+<td>服务实例清单的维护机制</td>
+</tr>
+<tr>
+<td>ServerListFilter<server></server></td>
+<td>ribbonServerListFilter</td>
+<td>ZonePreferenceServerListFilter</td>
+<td>服务实例清单的过滤机制</td>
+</tr>
+<tr>
+<td>ILoadBalancer</td>
+<td>ribbonLoadBalancer</td>
+<td>ZoneAwareLoadBalancer</td>
+<td>负载均衡器</td>
+</tr>
+<tr>
+<td>ServerListUpdater</td>
+<td>ribbonServerListUpdater</td>
+<td>PollingServerListUpdater</td>
+<td>服务实例的更新策略</td>
+</tr>
+</tbody>
+</table>
+<h3 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置:"></a><strong>自定义配置</strong>:</h3><ol>
+<li><p>使用配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RibbonConfiguration</span> </span>&#123;</span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> IRule <span class="title">ribbonRule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">// 随机的负载均衡策略</span></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> RandomRule();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@RibbonClient</span>(name = <span class="string">"USER-GAOTU100-COM"</span>, configuration=RibbonConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserRibbonConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在配置文件中修改默认配置(Camden SR4之后的版本支持)</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&lt;clientName&gt;.ribbon.NFLoadBalancerClassName:</span> <span class="string">Should</span> <span class="string">implement</span> <span class="string">ILoadBalancer</span></span><br><span class="line"><span class="string">&lt;clientName&gt;.ribbon.NFLoadBalancerRuleClassName:</span> <span class="string">Should</span> <span class="string">implement</span> <span class="string">IRule</span></span><br><span class="line"><span class="string">&lt;clientName&gt;.ribbon.NFLoadBalancerPingClassName:</span> <span class="string">Should</span> <span class="string">implement</span> <span class="string">IPing</span></span><br><span class="line"><span class="string">&lt;clientName&gt;.ribbon.NIWSServerListClassName:</span> <span class="string">Should</span> <span class="string">implement</span> <span class="string">ServerList</span></span><br><span class="line"><span class="string">&lt;clientName&gt;.ribbon.NIWSServerListFilterClassName:</span> <span class="string">Should</span> <span class="string">implement</span> <span class="string">ServerListFilter</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">USER-GAOTU100-COM:</span></span><br><span class="line"><span class="attr">   ribbon:</span> </span><br><span class="line"><span class="attr">       NFLoadBalancerRuleClassName:</span> <span class="string">com.netflix.loadBanlancer.RandomRule</span></span><br></pre></td></tr></table></figure>
+<p>可重写的配置请查看: <code>org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration</code></p>
+<h3 id="ribbon的全局配置"><a href="#ribbon的全局配置" class="headerlink" title="ribbon的全局配置"></a><strong>ribbon的全局配置</strong></h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 常用配置</span></span><br><span class="line"><span class="comment"># 开启重试机制</span></span><br><span class="line"><span class="string">spring.cloud.loadbalancer.retry.enabled</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line"><span class="comment"># 断路器的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds</span> <span class="string">=</span> <span class="number">10000</span></span><br><span class="line"><span class="comment"># 请求处理的超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout</span> <span class="string">=</span> <span class="number">3000</span></span><br><span class="line"><span class="comment"># 请求链接的超时时间</span></span><br><span class="line"><span class="string">ribbon.ribbon.ConnectTimeout</span> <span class="string">=</span> <span class="number">3000</span></span><br><span class="line"><span class="comment"># 当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries</span> <span class="string">=</span> <span class="number">3</span></span><br><span class="line"><span class="comment"># 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer</span> <span class="string">=</span> <span class="number">2</span></span><br><span class="line"><span class="comment"># USER-GAOTU100-COM.ribbon.ReadTimeout = 1000</span></span><br></pre></td></tr></table></figure>
+<p>针对具体客户端的配置格式: <code>&lt;client-name&gt;.ribbon.&lt;key&gt;=&lt;value&gt;</code><br><br>所有的配置的位置: <code>com.netflix.client.config.CommonClientConfigKey</code></p>
+</li>
+</ol>
+<h2 id="Feign-声明式REST客户端-文档"><a href="#Feign-声明式REST客户端-文档" class="headerlink" title="Feign-声明式REST客户端(文档)"></a><a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener">Feign-声明式REST客户端</a>(<a href="https://cloud.spring.io/spring-cloud-netflix/1.4.x/single/spring-cloud-netflix.html#spring-cloud-feign" target="_blank" rel="noopener">文档</a>)</h2><h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><ul>
+<li><p>添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>应用主类添加注解<code>@EnableFeignClients</code></p>
+</li>
+<li><p>创建feign接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"USER-GAOTU100-COM"</span>, configuration = FeignConfig.class, fallback =</span><br><span class="line">      UserFeignFallBackImpl.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">UserFeignClient</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">          value = &#123;<span class="string">"user/v2/captcha_pair"</span>&#125;,</span><br><span class="line">          method = &#123;RequestMethod.GET&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO&lt;SendPasscodeDTO&gt; <span class="title">getCaptchaPair</span><span class="params">(@RequestParam(<span class="string">"mobile"</span>)</span> String var1)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">            value = &#123;<span class="string">"user/v2/validate_captcha"</span>&#125;,</span><br><span class="line">            method = &#123;RequestMethod.GET&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO <span class="title">validateCaptcha</span><span class="params">(ValidateCaptchaRequest var1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">            value = &#123;<span class="string">"user/v2/send_passcode"</span>&#125;,</span><br><span class="line">            method = &#123;RequestMethod.POST&#125;,</span><br><span class="line">            headers = &#123;<span class="string">"Content-Type=application/x-www-form-urlencoded"</span>&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO <span class="title">sendPassCode</span><span class="params">(SendPassCodeRequest var1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">            value = &#123;<span class="string">"user/v2/validate_passcode"</span>&#125;,</span><br><span class="line">            method = &#123;RequestMethod.POST&#125;,</span><br><span class="line">            headers = &#123;<span class="string">"Content-Type=application/x-www-form-urlencoded"</span>&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO <span class="title">validatePassCode</span><span class="params">(ValidatePassCodeRequest var1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">            value = &#123;<span class="string">"user/v2/register"</span>&#125;,</span><br><span class="line">            method = &#123;RequestMethod.POST&#125;,</span><br><span class="line">            headers = &#123;<span class="string">"Content-Type=application/x-www-form-urlencoded"</span>&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO&lt;UserInfoVO&gt; <span class="title">registerUser</span><span class="params">(RegisterUserRequest var1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(</span><br><span class="line">            value = &#123;<span class="string">"user/v2/login"</span>&#125;,</span><br><span class="line">            method = &#123;RequestMethod.POST&#125;,</span><br><span class="line">            headers = &#123;<span class="string">"Content-Type=application/x-www-form-urlencoded"</span>&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">ResponseVO&lt;UserInfoVO&gt; <span class="title">loginByPassword</span><span class="params">(LoginByPasswordRequest var1)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> UserFeignClient userFeignClient;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认配置下, 当前版本的feign注意事项:</p>
+<ul>
+<li>所有的参数必须添加注解,以及绑定参数的名称</li>
+<li>传递对象参数, 不加@RequestBody注解, 也会默认是一个RequestBody, 即使是GET请求</li>
+<li>feign接口上不能加@RequestMapping注解, 要添加统一的前缀, 可以使用@FeignClient注解的path属性</li>
+<li>GET请求传递参数不能传递对象参数, 只能分开添加@RequestParam, 或者传递一个Map<string, ?=""> param</string,></li>
+<li>不支持类似@GetMapping这种包含请求方法语义的注解</li>
+</ul>
+</li>
+</ul>
+<h3 id="feign的自定义配置"><a href="#feign的自定义配置" class="headerlink" title="feign的自定义配置"></a>feign的自定义配置</h3><h4 id="feign的默认配置类-org-springframework-cloud-netflix-feign-FeignClientsConfiguration"><a href="#feign的默认配置类-org-springframework-cloud-netflix-feign-FeignClientsConfiguration" class="headerlink" title="feign的默认配置类: org.springframework.cloud.netflix.feign.FeignClientsConfiguration"></a>feign的默认配置类: <code>org.springframework.cloud.netflix.feign.FeignClientsConfiguration</code></h4><h4 id="自定义配置-1"><a href="#自定义配置-1" class="headerlink" title="自定义配置"></a>自定义配置</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * feign自定义配置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FeignConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ObjectFactory&lt;HttpMessageConverters&gt; messageConverters;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeignConfig</span><span class="params">(ObjectFactory&lt;HttpMessageConverters&gt; messageConverters)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.messageConverters = messageConverters;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    Logger.<span class="function">Level <span class="title">feignLoggerLevel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Logger.Level.FULL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Decoder <span class="title">feignDecoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CustomDecoder(<span class="keyword">new</span> SpringDecoder(messageConverters));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Encoder <span class="title">feignEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CustomEncoder(messageConverters);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加到<code>@FeignClient(value = &quot;USER-GAOTU100-COM&quot;, configuration = FeignConfig.class)</code></p>
+<h5 id="使用feign原生的注解"><a href="#使用feign原生的注解" class="headerlink" title="使用feign原生的注解"></a>使用feign原生的注解</h5><p>详细的用法: <a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener">https://github.com/OpenFeign/feign</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 更换契约</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Contract <span class="title">feignContract</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> feign.Contract.Default();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestLine</span>(<span class="string">"GET /&#123;id&#125;"</span>)</span><br><span class="line"><span class="meta">@Headers</span>(<span class="string">"Content-type: application/json"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">findUserById</span><span class="params">(@Param(<span class="string">"id"</span>)</span> Long id)</span></span><br></pre></td></tr></table></figure>
+<h5 id="使用JAX-RS的注解"><a href="#使用JAX-RS的注解" class="headerlink" title="使用JAX-RS的注解"></a>使用JAX-RS的注解</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-jaxrs<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>9.5.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.ws.rs<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jsr311-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 更换JAX-RS契约</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Contract <span class="title">feignContract</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JAXRSContract()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GET</span></span><br><span class="line"><span class="meta">@Path</span>(<span class="string">"/user/&#123;id&#125;"</span>)</span><br><span class="line"><span class="meta">@Produces</span>(&#123; <span class="string">"application/json"</span>&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(@PathParam(<span class="string">"id"</span>)</span> Integer id)</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="feign对压缩的支持"><a href="#feign对压缩的支持" class="headerlink" title="feign对压缩的支持"></a>feign对压缩的支持</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">feign.compression.request.enabled=true</span></span><br><span class="line"><span class="string">feign.compression.response.enabled=true</span></span><br></pre></td></tr></table></figure>
+<p>更精确的配置<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">feign.compression.request.enabled=true</span></span><br><span class="line"><span class="string">feign.compression.request.mime-types=text/xml,application/xml,application/json</span></span><br><span class="line"><span class="string">feign.compression.request.min-request-size=2048</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Feign的日志"><a href="#Feign的日志" class="headerlink" title="Feign的日志"></a>Feign的日志</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">    Logger.<span class="function">Level <span class="title">feignLoggerLevel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Logger.Level.FULL;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Logger-Level的选择"><a href="#Logger-Level的选择" class="headerlink" title="Logger.Level的选择:"></a>Logger.Level的选择:</h5><ol>
+<li>NONE: 不记录任何日志</li>
+<li>BASIC: 仅记录请求方法, URL, 响应状态码以及执行时间</li>
+<li>HEADERS: 在BASIC级别的基础上, 记录请求和响应的header</li>
+<li>FULL: 记录请求和响应的header, body和元数据</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring-cloud/" rel="tag"><i class="fa fa-tag"></i> spring cloud</a>
+          
+            <a href="/tags/ribbon/" rel="tag"><i class="fa fa-tag"></i> ribbon</a>
+          
+            <a href="/tags/feign/" rel="tag"><i class="fa fa-tag"></i> feign</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/17/spring-cloud-tutorial-1/" rel="next" title="spring cloud笔记(一)-springCloud和eureka简介">
+                <i class="fa fa-chevron-left"></i> spring cloud笔记(一)-springCloud和eureka简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avartar.jpg"
+                alt="zonzie" />
+            
+              <p class="site-author-name" itemprop="name">zonzie</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zonzie" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaobq13@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加actuator"><span class="nav-number">1.</span> <span class="nav-text">添加actuator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ribbon-客户端侧负载均衡-文档"><span class="nav-number">2.</span> <span class="nav-text">Ribbon 客户端侧负载均衡(文档)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">2.1.</span> <span class="nav-text">使用:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ribbon的默认配置"><span class="nav-number">2.2.</span> <span class="nav-text">ribbon的默认配置:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义配置"><span class="nav-number">2.3.</span> <span class="nav-text">自定义配置:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ribbon的全局配置"><span class="nav-number">2.4.</span> <span class="nav-text">ribbon的全局配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feign-声明式REST客户端-文档"><span class="nav-number">3.</span> <span class="nav-text">Feign-声明式REST客户端(文档)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-number">3.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feign的自定义配置"><span class="nav-number">3.2.</span> <span class="nav-text">feign的自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#feign的默认配置类-org-springframework-cloud-netflix-feign-FeignClientsConfiguration"><span class="nav-number">3.2.1.</span> <span class="nav-text">feign的默认配置类: org.springframework.cloud.netflix.feign.FeignClientsConfiguration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义配置-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用feign原生的注解"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">使用feign原生的注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用JAX-RS的注解"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">使用JAX-RS的注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#feign对压缩的支持"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">feign对压缩的支持</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Feign的日志"><span class="nav-number">3.2.3.</span> <span class="nav-text">Feign的日志</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Logger-Level的选择"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">Logger.Level的选择:</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zonzie</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+        
+<span class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      总访问量:&nbsp;
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</span>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Rji1lKrSTpNODa6AqPDnMqIV-gzGzoHsz", "DVufT1L5TN6qD7qijs4BehQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
